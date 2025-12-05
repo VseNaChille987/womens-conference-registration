@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Church Women's Conference</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f7e8ff;padding:20px;}
+.container{background:white;padding:25px;max-width:600px;margin:auto;border-radius:12px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
+h1{text-align:center;margin-bottom:20px;}
+label{display:block;margin-top:12px;font-weight:bold;}
+input,select,textarea{width:100%;padding:10px;margin-top:5px;border-radius:6px;border:1px solid #bbb;}
+button{margin-top:20px;width:100%;padding:12px;background:#9c27b0;border:none;color:white;font-size:18px;border-radius:8px;cursor:pointer;}
+button:hover{background:#7b1fa2;}
+.hidden{display:none;}
+#confirmationMessage{margin-top:20px;padding:15px;background:#e8ffe8;border:1px solid #4caf50;border-radius:8px;text-align:center;font-weight:bold;}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Church Women's Conference</h1>
+
+<h2>Register</h2>
+<form id="registrationForm">
+<label>Membership Type</label>
+<select name="membershipType" required>
+<option value="">Select...</option>
+<option value="Member">Member</option>
+<option value="Non-Member">Non-Member</option>
+</select>
+
+<label>First Name</label><input type="text" name="firstName" required>
+<label>Last Name</label><input type="text" name="lastName" required>
+<label>Email</label><input type="email" name="email" required>
+<label>Phone</label><input type="tel" name="phone" required>
+
+<label>Which days can you attend?</label>
+<select name="days">
+<option value="Friday">Friday</option>
+<option value="Saturday">Saturday</option>
+<option value="Both">Both</option>
+</select>
+
+<label>Payment Method</label>
+<select name="paymentMethod">
+<option value="PayPal">PayPal</option>
+<option value="Venmo">Venmo</option>
+<option value="Cash">Cash</option>
+</select>
+
+<button type="submit">Submit Registration</button>
+</form>
+
+<h2>Submit a Question</h2>
+<form id="questionForm">
+<textarea name="question" rows="4" placeholder="Your question" required></textarea>
+<button type="submit">Submit Question</button>
+</form>
+
+<p id="confirmationMessage" class="hidden"></p>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPKNMRpVvy0MQGt3AEKpn4HMEylozVEv4RO8Sd72Pe1vhe0Oab0PkZs1s0CH3RakMs/exec";
+
+function submitForm(formData, callback){
+fetch(SCRIPT_URL,{
+method:"POST",
+mode:"cors",
+headers:{"Content-Type":"text/plain;charset=UTF-8"},
+body:JSON.stringify(formData)
+}).then(res=>res.json())
+.then(data=>callback(null,data))
+.catch(err=>callback(err,null));
+}
+
+// Registration form
+document.getElementById("registrationForm").addEventListener("submit",e=>{
+e.preventDefault();
+const formData = Object.fromEntries(new FormData(e.target));
+submitForm(formData,(err,data)=>{
+const msg = document.getElementById("confirmationMessage");
+if(err){msg.textContent="Error submitting form";msg.classList.remove("hidden");return;}
+msg.textContent=data.message;
+msg.classList.remove("hidden");
+e.target.reset();
+});
+});
+
+// Question form
+document.getElementById("questionForm").addEventListener("submit",e=>{
+e.preventDefault();
+const formData={question:e.target.question.value};
+submitForm(formData,(err,data)=>{
+const msg=document.getElementById("confirmationMessage");
+if(err){msg.textContent="Error submitting question";msg.classList.remove("hidden");return;}
+msg.textContent=data.message;
+msg.classList.remove("hidden");
+e.target.reset();
+});
+});
+</script>
+</body>
+</html>
