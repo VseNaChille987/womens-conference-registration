@@ -106,16 +106,18 @@ label{font-weight:500;margin-top:8px;}
 </div>
 
 <script>
+const webAppUrl = "https://script.google.com/macros/s/AKfycbxtxPvQJqaKClA7lI1Sa5tMFYbkq8GrycG1ToQXifeiQQS0ZuxKY0Gx6KvyqPRnY60H/exec"; // <-- Replace this
+
 // Membership cost display
 const membershipType = document.getElementById('membershipType');
 const costDisplay = document.getElementById('costDisplay');
 membershipType.addEventListener('change', () => {
-  if (membershipType.value === "Member") costDisplay.textContent = "Cost: $50";
-  else if (membershipType.value === "Non-Member") costDisplay.textContent = "Cost: $70";
-  else costDisplay.textContent = "Select member type to see cost.";
+  costDisplay.textContent = membershipType.value === "Member" ? "Cost: $50"
+    : membershipType.value === "Non-Member" ? "Cost: $70"
+    : "Select member type to see cost.";
 });
 
-// Payment instructions and QR
+// Payment instructions
 const paymentMethodSelect = document.getElementById('paymentMethod');
 const paymentInstructions = document.getElementById('paymentInstructions');
 const paymentQR = document.getElementById('paymentQR');
@@ -126,112 +128,76 @@ paymentMethodSelect.addEventListener('change', () => {
   paymentQR.classList.add('hidden');
   paymentInstructions.classList.add('hidden');
 
-  if (val === 'PayPal') {
+  if(val==="PayPal"){
     currentPaymentLink = "https://www.paypal.com/paypalme/YOUR_PAYPAL_LINK";
-    paymentInstructions.innerHTML = 'Scan this QR code or click the link to pay via PayPal.';
+    paymentInstructions.innerHTML = 'Scan QR or click link to pay via PayPal.';
     paymentInstructions.classList.remove('hidden');
     paymentQR.src = `https://chart.googleapis.com/chart?cht=qr&chl=${encodeURIComponent(currentPaymentLink)}&chs=200x200&chld=L|0`;
     paymentQR.classList.remove('hidden');
-  } else if (val === 'Venmo') {
+  } else if(val==="Venmo"){
     currentPaymentLink = "https://venmo.com/YOUR_VENMO_HANDLE";
-    paymentInstructions.innerHTML = 'Scan this QR code or click the link to pay via Venmo.';
+    paymentInstructions.innerHTML = 'Scan QR or click link to pay via Venmo.';
     paymentInstructions.classList.remove('hidden');
     paymentQR.src = `https://chart.googleapis.com/chart?cht=qr&chl=${encodeURIComponent(currentPaymentLink)}&chs=200x200&chld=L|0`;
     paymentQR.classList.remove('hidden');
-  } else if (val === 'Cash') {
+  } else if(val==="Cash"){
     currentPaymentLink = '';
     paymentInstructions.innerHTML = 'Please bring cash to [Person/Location Name] at [Location].';
     paymentInstructions.classList.remove('hidden');
-  } else {
-    currentPaymentLink = '';
-  }
+  } else currentPaymentLink = '';
 });
 
-// Sign-up form submission with auto-payment redirect
-document.getElementById('signupForm').addEventListener('submit', async (e) => {
+// Signup form submission
+document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const formMessage = document.getElementById('formMessage');
   formMessage.textContent = "Submitting...";
 
   const data = new FormData(e.target);
   const payload = {};
-  data.forEach((value, key) => {
-    if (key === 'days') {
-      if (!payload[key]) payload[key] = [];
-      payload[key].push(value);
-    } else {
-      payload[key] = value;
-    }
+  data.forEach((value,key)=>{
+    if(key==='days'){ if(!payload[key]) payload[key]=[]; payload[key].push(value); }
+    else payload[key]=value;
   });
 
-  try {
-    const res = await fetch('https://script.google.com/macros/s/AKfycbxLMpeFNe4ALEWfTjp4AbORKxCCPXvzdYLhi6ekj2N00FI6qelPwhessEZWTa4Kt20/exec', {
-      method: 'POST',
+  try{
+    const res = await fetch(webAppUrl,{
+      method:'POST',
       body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' }
+      headers:{'Content-Type':'application/json'}
     });
-
     const result = await res.json();
-    console.log("Server response:", result);
-
-    if (result.status === 'success') {
-      formMessage.textContent = "Thank you! Preparing payment...";
+    if(result.status==='success'){
+      formMessage.textContent="Thank you! Preparing payment...";
       e.target.reset();
-      costDisplay.textContent = "Select member type to see cost.";
+      costDisplay.textContent="Select member type to see cost.";
       paymentInstructions.classList.add('hidden');
       paymentQR.classList.add('hidden');
-
-      if (currentPaymentLink) {
-        paymentQR.src = `https://chart.googleapis.com/chart?cht=qr&chl=${encodeURIComponent(currentPaymentLink)}&chs=200x200&chld=L|0`;
-        paymentQR.classList.remove('hidden');
-        paymentInstructions.innerHTML = `Redirecting to payment... If not redirected, scan the QR code.`;
-        paymentInstructions.classList.remove('hidden');
-
-        setTimeout(() => {
-          window.location.href = currentPaymentLink;
-        }, 1500);
-      } else if (payload.paymentMethod === 'Cash') {
-        formMessage.textContent = "Thank you! Please bring cash to the event.";
-      }
-
-    } else {
-      formMessage.textContent = "Error: " + result.message;
-    }
-
-  } catch (err) {
-    console.error("Fetch error:", err);
-    formMessage.textContent = "Error submitting form. Check console for details.";
-  }
+      if(currentPaymentLink) setTimeout(()=>window.location.href=currentPaymentLink,1500);
+    } else formMessage.textContent="Error: "+result.message;
+  }catch(err){ console.error(err); formMessage.textContent="Error submitting form. Check console for details.";}
 });
 
 // Questions form submission
-document.getElementById('questionForm').addEventListener('submit', async (e) => {
+document.getElementById('questionForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const msg = document.getElementById('questionMessage');
-  msg.textContent = "Submitting...";
+  msg.textContent="Submitting...";
   const data = new FormData(e.target);
-  const payload = { question: data.get('question') };
+  const payload = {question: data.get('question')};
 
-  try {
-    const res = await fetch('https://script.google.com/macros/s/AKfycbxLMpeFNe4ALEWfTjp4AbORKxCCPXvzdYLhi6ekj2N00FI6qelPwhessEZWTa4Kt20/exec', {
-      method: 'POST',
+  try{
+    const res = await fetch(webAppUrl,{
+      method:'POST',
       body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' }
+      headers:{'Content-Type':'application/json'}
     });
-
     const result = await res.json();
-    console.log("Question response:", result);
-    if (result.status === 'success') {
-      msg.textContent = "Thank you! Your question has been submitted.";
-      e.target.reset();
-    } else {
-      msg.textContent = "Error: " + result.message;
-    }
-  } catch (err) {
-    console.error("Fetch error:", err);
-    msg.textContent = "Error submitting question. Check console for details.";
-  }
+    if(result.status==='success'){ msg.textContent="Thank you! Your question has been submitted."; e.target.reset(); }
+    else msg.textContent="Error: "+result.message;
+  }catch(err){ console.error(err); msg.textContent="Error submitting question. Check console for details.";}
 });
 </script>
 </body>
 </html>
+
