@@ -39,9 +39,12 @@ label{font-weight:500;margin-top:8px;}
 }
 @media(max-width:500px){
   .checkbox-group {
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
+    flex-direction: column; 
+    gap: 12px; 
+    align-items: flex-start;
+  }
+  .checkbox-group label {
+    gap: 4px;
   }
 }
 .btn{display:inline-block;padding:14px 24px;border-radius:12px;background:white;color:#d14477;font-weight:600;text-decoration:none;box-shadow:0 6px 18px rgba(209,68,119,0.12);cursor:pointer;transition:all 0.2s ease-in-out;font-size:18px;}
@@ -163,10 +166,10 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
 
 <script>
 // --- Airtable Config ---
-const airtableToken= "patggy7oHxwXm3DKU.53ec9f4db254b7bfec5a04be665764f22dcb9a0ed6c93318238912a9a8a58a4d";
-const baseId= "patggy7oHxwXm3DKU.53ec9f4db254b7bfec5a04be665764f22dcb9a0ed6c93318238912a9a8a58a4d";
-const tableRegistrations="tblapX4iXV1bHPC6J";
-const tableQuestions="tblYxvkoQROYmY2ou";
+const airtableToken= "YOUR_AIRTABLE_TOKEN";
+const baseId= "YOUR_BASE_ID";
+const tableRegistrations="YOUR_TABLE_REGISTRATIONS";
+const tableQuestions="YOUR_TABLE_QUESTIONS";
 
 // --- Language ---
 let selectedLang="en";
@@ -216,16 +219,14 @@ function applyLanguage(){
   document.getElementById("speakerBio").textContent = data.speakerBio;
   document.getElementById("signupHeader").textContent = data.signupHeader;
   document.getElementById("membershipLabel").textContent = data.membershipLabel;
-  const membershipSelect=document.getElementById("membershipType");
-  membershipSelect.options[1].text=data.membershipOptions[0];
-  membershipSelect.options[2].text=data.membershipOptions[1];
+  document.getElementById("membershipType").options[1].text=data.membershipOptions[0];
+  document.getElementById("membershipType").options[2].text=data.membershipOptions[1];
   document.getElementById("daysLabel").textContent=data.daysLabel;
   document.getElementById("fridayText").textContent=data.fridayText;
   document.getElementById("saturdayText").textContent=data.saturdayText;
   document.getElementById("paymentLabel").textContent=data.paymentLabel;
-  const paymentSelect=document.getElementById("paymentMethod");
-  paymentSelect.options[1].text=data.paymentOptions[0];
-  paymentSelect.options[2].text=data.paymentOptions[1];
+  document.getElementById("paymentMethod").options[1].text=data.paymentOptions[0];
+  document.getElementById("paymentMethod").options[2].text=data.paymentOptions[1];
   document.getElementById("submitBtn").textContent=data.submitBtn;
   document.getElementById("questionHeader").textContent=data.questionHeader;
   document.getElementById("submitQuestionBtn").textContent=data.submitQuestionBtn;
@@ -247,9 +248,9 @@ const membershipType=document.getElementById('membershipType');
 const costDisplay=document.getElementById('costDisplay');
 membershipType.addEventListener('change',()=>{
   const data=languageData[selectedLang];
-  costDisplay.textContent=membershipType.value===membershipType.options[1].text?data.costMember:
-                          membershipType.value===membershipType.options[2].text?data.costNonMember:
-                          "Select member type to see cost.";
+  if(membershipType.value==="Member") costDisplay.textContent=data.costMember;
+  else if(membershipType.value==="Non-Member") costDisplay.textContent=data.costNonMember;
+  else costDisplay.textContent="Select member type to see cost.";
 });
 
 // --- Payment instructions & PayPal ---
@@ -257,10 +258,13 @@ const paymentMethodSelect=document.getElementById('paymentMethod');
 const paymentInstructions=document.getElementById('paymentInstructions');
 const paypalLink="https://www.paypal.com/donate?token=CvoGFrxQa-Zj7ZXYH6xH5YvuqjivrARQdnwxkkXz5X85dtGKXRgW1UhkHZNCrCihlgZ0-Bl310FC3za-#";
 paymentMethodSelect.addEventListener('change',()=>{
-  if(paymentMethodSelect.value===paymentMethodSelect.options[2].text){
-    paymentInstructions.textContent=languageData[selectedLang].cashInstructions;
+  const data = languageData[selectedLang];
+  if(paymentMethodSelect.value==="Cash"){
+    paymentInstructions.textContent = data.cashInstructions;
     paymentInstructions.classList.remove('hidden');
-  } else paymentInstructions.classList.add('hidden');
+  } else {
+    paymentInstructions.classList.add('hidden');
+  }
 });
 
 // --- Sign up form submit ---
@@ -284,7 +288,7 @@ document.getElementById('signupForm').addEventListener('submit', async (e)=>{
       e.target.reset();
       costDisplay.textContent="Select member type to see cost.";
       paymentInstructions.classList.add('hidden');
-      if(paymentMethodSelect.value===paymentMethodSelect.options[1].text){
+      if(paymentMethodSelect.value==="PayPal"){
         formMessage.textContent="Redirecting to PayPal...";
         window.open(paypalLink,"_blank");
       } else formMessage.textContent="Registration submitted!";
