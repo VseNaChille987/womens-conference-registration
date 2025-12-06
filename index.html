@@ -49,7 +49,7 @@ label{font-weight:500;margin-top:8px;}
     <div class="details">
       <h3>Oksana Grabchuk</h3>
       <p class="muted">Pastor / Author / Speaker</p>
-      <p class="bio">Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal. Attendees will leave inspired and equipped to live their faith boldly.</p>
+      <p class="bio">Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.</p>
     </div>
   </div>
 </section>
@@ -106,7 +106,10 @@ label{font-weight:500;margin-top:8px;}
 </div>
 
 <script>
-const webAppUrl = "YOUR_WEB_APP_URL"; // <-- Replace this
+const airtableToken = "pat1wo8zJvaRwM36J";
+const baseId = "appP2cm5hgmoANQ7i";
+const tableRegistrations = "tblapX4iXV1bHPC6J";
+const tableQuestions = "tblYxvkoQROYmY2ou";
 
 // Membership cost display
 const membershipType = document.getElementById('membershipType');
@@ -142,12 +145,12 @@ paymentMethodSelect.addEventListener('change', () => {
     paymentQR.classList.remove('hidden');
   } else if(val==="Cash"){
     currentPaymentLink = '';
-    paymentInstructions.innerHTML = 'Please bring cash to [Person/Location Name] at [Location].';
+    paymentInstructions.innerHTML = 'Please bring cash to registration table.';
     paymentInstructions.classList.remove('hidden');
-  } else currentPaymentLink = '';
+  }
 });
 
-// Signup form submission
+// Signup form to Airtable
 document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const formMessage = document.getElementById('formMessage');
@@ -156,48 +159,77 @@ document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   const data = new FormData(e.target);
   const payload = {};
   data.forEach((value,key)=>{
-    if(key==='days'){ if(!payload[key]) payload[key]=[]; payload[key].push(value); }
+    if(key==='days'){ 
+      if(!payload[key]) payload[key]=[];
+      payload[key].push(value);
+    }
     else payload[key]=value;
   });
 
   try{
-    const res = await fetch(webAppUrl,{
+    const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableRegistrations}`, {
       method:'POST',
-      body: JSON.stringify(payload),
-      headers:{'Content-Type':'application/json'}
+      headers:{
+        Authorization: `Bearer ${airtableToken}`,
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        fields: payload
+      })
     });
-    const result = await res.json();
-    if(result.status==='success'){
+
+    if(res.ok){
       formMessage.textContent="Thank you! Preparing payment...";
       e.target.reset();
       costDisplay.textContent="Select member type to see cost.";
       paymentInstructions.classList.add('hidden');
       paymentQR.classList.add('hidden');
       if(currentPaymentLink) setTimeout(()=>window.location.href=currentPaymentLink,1500);
-    } else formMessage.textContent="Error: "+result.message;
-  }catch(err){ console.error(err); formMessage.textContent="Error submitting form. Check console for details.";}
+    } else {
+      const err = await res.json();
+      formMessage.textContent="Error: "+err.error?.message;
+    }
+
+  }catch(err){
+    formMessage.textContent="Error submitting form.";
+  }
 });
 
-// Questions form submission
+// Question form to Airtable
 document.getElementById('questionForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const msg = document.getElementById('questionMessage');
   msg.textContent="Submitting...";
+
   const data = new FormData(e.target);
-  const payload = {question: data.get('question')};
+  const question = data.get('question');
 
   try{
-    const res = await fetch(webAppUrl,{
+    const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableQuestions}`, {
       method:'POST',
-      body: JSON.stringify(payload),
-      headers:{'Content-Type':'application/json'}
+      headers:{
+        Authorization: `Bearer ${airtableToken}`,
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        fields: {
+          Question: question
+        }
+      })
     });
-    const result = await res.json();
-    if(result.status==='success'){ msg.textContent="Thank you! Your question has been submitted."; e.target.reset(); }
-    else msg.textContent="Error: "+result.message;
-  }catch(err){ console.error(err); msg.textContent="Error submitting question. Check console for details.";}
+
+    if(res.ok){
+      msg.textContent="Thank you! Your question has been submitted.";
+      e.target.reset();
+    } else {
+      const err = await res.json();
+      msg.textContent="Error: "+err.error?.message;
+    }
+
+  }catch(err){
+    msg.textContent="Error submitting question.";
+  }
 });
 </script>
 </body>
 </html>
-
