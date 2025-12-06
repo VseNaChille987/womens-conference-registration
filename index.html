@@ -22,7 +22,7 @@ h2{margin:0 0 10px 0;color:#d14477;}
 .bio{margin-top:8px;color:var(--muted);}
 form{display:flex;flex-direction:column;gap:12px;align-items:center;}
 input,select,textarea{padding:10px;border-radius:8px;border:1px solid #ccc;width:100%;max-width:400px;margin:0 auto;}
-label{font-weight:500;margin-top:8px;}
+label{font-weight:500;margin-top:8px;display:flex;align-items:center;gap:8px;}
 .checkbox-group{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
 .btn{display:inline-block;padding:14px 24px;border-radius:12px;background:white;color:#d14477;font-weight:600;text-decoration:none;box-shadow:0 6px 18px rgba(209,68,119,0.12);cursor:pointer;transition:all 0.2s ease-in-out;font-size:18px;}
 .btn:hover{transform:translateY(-2px);}
@@ -71,7 +71,6 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
   <div class="speaker">
     <img src="guest.jpg" alt="Oksana Grabchuk">
     <div class="details">
-      <p class="muted" id="speakerPhone">Phone: (123) 456-7890</p>
       <h3 id="speakerName">Oksana Grabchuk</h3>
       <p class="muted" id="speakerRole">Pastor / Author / Speaker</p>
       <p class="bio" id="speakerBio">Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.</p>
@@ -83,11 +82,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
 <section class="card">
   <h2 id="scheduleHeader">Schedule</h2>
   <ul id="scheduleList">
-    <li>Friday 4 PM - Start</li>
-    <li>Friday 5 PM - Break</li>
-    <li>Saturday 9 AM - Session</li>
-    <li>Saturday 12 PM - Lunch</li>
-    <li>Saturday 1 PM - Workshop</li>
+    <!-- Dynamic schedule items will appear here -->
   </ul>
 </section>
 
@@ -106,7 +101,6 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
     <input type="text" name="firstName" placeholder="First Name" required>
     <input type="text" name="lastName" placeholder="Last Name" required>
     <input type="email" name="email" placeholder="Email" required>
-    <input type="tel" name="phone" placeholder="Phone" required>
 
     <label id="daysLabel">Which days can you attend?</label>
     <div class="checkbox-group">
@@ -158,24 +152,66 @@ const languageData={
       signupHeader:"Sign Up", membershipLabel:"Are you a member or non-member?", daysLabel:"Which days can you attend?",
       fridayText:"Friday", saturdayText:"Saturday", paymentLabel:"Payment Method", submitBtn:"Submit Registration",
       questionHeader:"Submit a Question", submitQuestionBtn:"Submit Question", costMember:"Cost: $50", costNonMember:"Cost: $70",
-      cashInstructions:"Please bring cash to registration table."},
+      cashInstructions:"Please bring cash to registration table.",
+      scheduleItems:["Friday 4 PM - Start","Friday 5 PM - Break","Saturday 9 AM - Session","Saturday 12 PM - Lunch","Saturday 1 PM - Workshop"]
+  },
   ru:{heroTitle:"Женская конференция церкви", heroDate:"Место проведения • Суббота, Месяц День, 2026 • 9:00 — 16:00",
       themeHeader:"Тема конференции", themeVerse:"\"Ваша цитата из Библии здесь\"", speakerHeader:"Приглашенный спикер",
       speakerRole:"Пастор / Автор / Спикер", speakerBio:"Оксана поделится духовным ростом, построением общины и практическими инструментами для ежедневного обновления.",
       signupHeader:"Регистрация", membershipLabel:"Вы участник или не участник?", daysLabel:"В какие дни вы можете присутствовать?",
       fridayText:"Пятница", saturdayText:"Суббота", paymentLabel:"Способ оплаты", submitBtn:"Отправить регистрацию",
       questionHeader:"Задать вопрос", submitQuestionBtn:"Отправить вопрос", costMember:"Стоимость: $50", costNonMember:"Стоимость: $70",
-      cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол."}
+      cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.",
+      scheduleItems:["Пятница 16:00 - Начало","Пятница 17:00 - Перерыв","Суббота 9:00 - Сессия","Суббота 12:00 - Обед","Суббота 13:00 - Мастер-класс"]
+  }
 };
 
 // --- Language functions ---
-function setLanguage(lang){selectedLang=lang; document.getElementById("languageSelection").classList.add("hidden"); document.getElementById("mainPage").classList.remove("hidden"); applyLanguage();}
-function applyLanguage(){const data=languageData[selectedLang];document.getElementById("heroTitle").textContent=data.heroTitle;document.getElementById("heroDate").textContent=data.heroDate;document.getElementById("themeHeader").textContent=data.themeHeader;document.getElementById("themeVerse").textContent=data.themeVerse;document.getElementById("speakerHeader").textContent=data.speakerHeader;document.getElementById("speakerRole").textContent=data.speakerRole;document.getElementById("speakerBio").textContent=data.speakerBio;document.getElementById("signupHeader").textContent=data.signupHeader;document.getElementById("membershipLabel").textContent=data.membershipLabel;document.getElementById("daysLabel").textContent=data.daysLabel;document.getElementById("fridayText").textContent=data.fridayText;document.getElementById("saturdayText").textContent=data.saturdayText;document.getElementById("paymentLabel").textContent=data.paymentLabel;document.getElementById("submitBtn").textContent=data.submitBtn;document.getElementById("questionHeader").textContent=data.questionHeader;document.getElementById("submitQuestionBtn").textContent=data.submitQuestionBtn;}
+function setLanguage(lang){
+  selectedLang=lang; 
+  document.getElementById("languageSelection").classList.add("hidden"); 
+  document.getElementById("mainPage").classList.remove("hidden"); 
+  applyLanguage();
+}
+
+function applyLanguage(){
+  const data=languageData[selectedLang];
+  document.getElementById("heroTitle").textContent = data.heroTitle;
+  document.getElementById("heroDate").textContent = data.heroDate;
+  document.getElementById("themeHeader").textContent = data.themeHeader;
+  document.getElementById("themeVerse").textContent = data.themeVerse;
+  document.getElementById("speakerHeader").textContent = data.speakerHeader;
+  document.getElementById("speakerRole").textContent = data.speakerRole;
+  document.getElementById("speakerBio").textContent = data.speakerBio;
+  document.getElementById("signupHeader").textContent = data.signupHeader;
+  document.getElementById("membershipLabel").textContent = data.membershipLabel;
+  document.getElementById("daysLabel").textContent = data.daysLabel;
+  document.getElementById("fridayText").textContent = data.fridayText;
+  document.getElementById("saturdayText").textContent = data.saturdayText;
+  document.getElementById("paymentLabel").textContent = data.paymentLabel;
+  document.getElementById("submitBtn").textContent = data.submitBtn;
+  document.getElementById("questionHeader").textContent = data.questionHeader;
+  document.getElementById("submitQuestionBtn").textContent = data.submitQuestionBtn;
+
+  // Update schedule dynamically
+  const scheduleList = document.getElementById("scheduleList");
+  scheduleList.innerHTML = "";
+  data.scheduleItems.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    scheduleList.appendChild(li);
+  });
+}
 
 // --- Cost display ---
 const membershipType=document.getElementById('membershipType');
 const costDisplay=document.getElementById('costDisplay');
-membershipType.addEventListener('change',()=>{const data=languageData[selectedLang]; costDisplay.textContent=membershipType.value==="Member"?data.costMember:membershipType.value==="Non-Member"?data.costNonMember:"Select member type to see cost."});
+membershipType.addEventListener('change',()=>{
+  const data=languageData[selectedLang]; 
+  costDisplay.textContent=membershipType.value==="Member"?data.costMember:
+                          membershipType.value==="Non-Member"?data.costNonMember:
+                          "Select member type to see cost.";
+});
 
 // --- Payment instructions & PayPal ---
 const paymentMethodSelect=document.getElementById('paymentMethod');
@@ -183,7 +219,10 @@ const paymentInstructions=document.getElementById('paymentInstructions');
 const paypalLink="https://www.paypal.com/donate?token=CvoGFrxQa-Zj7ZXYH6xH5YvuqjivrARQdnwxkkXz5X85dtGKXRgW1UhkHZNCrCihlgZ0-Bl310FC3za-#";
 
 paymentMethodSelect.addEventListener('change',()=>{
-  if(paymentMethodSelect.value==="Cash"){paymentInstructions.textContent=languageData[selectedLang].cashInstructions;paymentInstructions.classList.remove('hidden');} else paymentInstructions.classList.add('hidden');
+  if(paymentMethodSelect.value==="Cash"){
+    paymentInstructions.textContent=languageData[selectedLang].cashInstructions;
+    paymentInstructions.classList.remove('hidden');
+  } else paymentInstructions.classList.add('hidden');
 });
 
 // --- Sign up form submit ---
@@ -193,7 +232,10 @@ document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   formMessage.textContent="Submitting...";
   const dataForm=new FormData(e.target);
   const payload={};
-  dataForm.forEach((value,key)=>{if(key==='days'){if(!payload[key]) payload[key]=[];payload[key].push(value);} else payload[key]=value;});
+  dataForm.forEach((value,key)=>{
+    if(key==='days'){if(!payload[key]) payload[key]=[];payload[key].push(value);} 
+    else payload[key]=value;
+  });
   try{
     const res=await fetch(`https://api.airtable.com/v0/${baseId}/${tableRegistrations}`,{
       method:'POST',
