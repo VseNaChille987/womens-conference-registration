@@ -27,38 +27,51 @@ label{font-weight:500;margin-top:8px;}
 .btn{display:inline-block;padding:12px 18px;border-radius:12px;background:white;color:#d14477;font-weight:600;text-decoration:none;box-shadow:0 6px 18px rgba(209,68,119,0.12);cursor:pointer;transition:all 0.2s ease-in-out;}
 .btn:hover{transform:translateY(-2px);}
 .hidden{display:none;}
+.language-selection{text-align:center;margin-top:80px;}
+.language-selection button{margin:0 12px;padding:12px 24px;font-size:16px;border-radius:12px;cursor:pointer;background:var(--accent-1);color:white;border:none;}
 #paymentQR{margin-top:12px;width:200px;height:200px;}
 @media(max-width:700px){.speaker{flex-direction:column;align-items:center;text-align:center;}.speaker img{width:160px;height:160px;}}
 </style>
 </head>
 <body>
+
 <div class="container">
+
+<!-- LANGUAGE SELECTION -->
+<section id="languageSelection" class="language-selection">
+  <h1>Select Language / Выберите язык</h1>
+  <button onclick="setLanguage('en')">English</button>
+  <button onclick="setLanguage('ru')">Русский</button>
+</section>
+
+<!-- MAIN PAGE -->
+<div id="mainPage" class="hidden">
 
 <!-- HERO -->
 <section class="hero">
   <img src="logo.png" alt="Conference logo" class="logo">
-  <h1>Church Women’s Conference</h1>
-  <p>Location • Saturday, Month Day, 2026 • 9:00 AM — 4:00 PM</p>
+  <h1 id="heroTitle">Church Women’s Conference</h1>
+  <p id="heroDate">Location • Saturday, Month Day, 2026 • 9:00 AM — 4:00 PM</p>
 </section>
 
 <!-- SPEAKER -->
 <section class="card">
-  <h2>Guest Speaker</h2>
+  <h2 id="speakerHeader">Guest Speaker</h2>
   <div class="speaker">
     <img src="guest.jpg" alt="Oksana Grabchuk">
     <div class="details">
-      <h3>Oksana Grabchuk</h3>
-      <p class="muted">Pastor / Author / Speaker</p>
-      <p class="bio">Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.</p>
+      <h3 id="speakerName">Oksana Grabchuk</h3>
+      <p class="muted" id="speakerRole">Pastor / Author / Speaker</p>
+      <p class="bio" id="speakerBio">Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.</p>
     </div>
   </div>
 </section>
 
 <!-- SIGN UP -->
 <section class="card">
-  <h2>Sign Up</h2>
+  <h2 id="signupHeader">Sign Up</h2>
   <form id="signupForm">
-    <label>Are you a member or non-member?</label>
+    <label id="membershipLabel">Are you a member or non-member?</label>
     <select name="membershipType" id="membershipType" required>
       <option value="">Select...</option>
       <option value="Member">Member</option>
@@ -71,38 +84,37 @@ label{font-weight:500;margin-top:8px;}
     <input type="email" name="email" placeholder="Email" required>
     <input type="tel" name="phone" placeholder="Phone" required>
 
-    <label>Which days can you attend?</label>
+    <label id="daysLabel">Which days can you attend?</label>
     <div class="checkbox-group">
-      <label><input type="checkbox" name="days" value="Friday"> Friday</label>
-      <label><input type="checkbox" name="days" value="Saturday"> Saturday</label>
+      <label><input type="checkbox" name="days" value="Friday"> <span id="fridayText">Friday</span></label>
+      <label><input type="checkbox" name="days" value="Saturday"> <span id="saturdayText">Saturday</span></label>
     </div>
 
-    <label>Payment Method</label>
+    <label id="paymentLabel">Payment Method</label>
     <select name="paymentMethod" id="paymentMethod" required>
       <option value="">Select payment method</option>
       <option value="PayPal">PayPal</option>
-      <option value="Venmo">Venmo</option>
       <option value="Cash">Cash</option>
     </select>
 
     <div id="paymentInstructions" class="muted hidden"></div>
-    <img id="paymentQR" class="hidden" alt="Payment QR code">
 
-    <button type="submit" class="btn">Submit Registration</button>
+    <button type="submit" class="btn" id="submitBtn">Submit Registration</button>
   </form>
   <p class="muted" id="formMessage"></p>
 </section>
 
 <!-- QUESTIONS -->
 <section class="card">
-  <h2>Submit a Question</h2>
+  <h2 id="questionHeader">Submit a Question</h2>
   <form id="questionForm">
     <textarea name="question" placeholder="Your question" rows="4" required></textarea>
-    <button type="submit" class="btn">Submit Question</button>
+    <button type="submit" class="btn" id="submitQuestionBtn">Submit Question</button>
     <p class="muted" id="questionMessage"></p>
   </form>
 </section>
 
+</div>
 </div>
 
 <script>
@@ -111,58 +123,109 @@ const baseId = "appP2cm5hgmoANQ7i";
 const tableRegistrations = "tblapX4iXV1bHPC6J";
 const tableQuestions = "tblYxvkoQROYmY2ou";
 
-// Membership cost display
+// --- LANGUAGE DATA ---
+const languageData = {
+  en: {
+    heroTitle: "Church Women’s Conference",
+    heroDate: "Location • Saturday, Month Day, 2026 • 9:00 AM — 4:00 PM",
+    speakerHeader: "Guest Speaker",
+    speakerRole: "Pastor / Author / Speaker",
+    speakerBio: "Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.",
+    signupHeader: "Sign Up",
+    membershipLabel: "Are you a member or non-member?",
+    daysLabel: "Which days can you attend?",
+    fridayText: "Friday",
+    saturdayText: "Saturday",
+    paymentLabel: "Payment Method",
+    submitBtn: "Submit Registration",
+    questionHeader: "Submit a Question",
+    submitQuestionBtn: "Submit Question",
+    costMember: "Cost: $50",
+    costNonMember: "Cost: $70",
+    cashInstructions: "Please bring cash to registration table."
+  },
+  ru: {
+    heroTitle: "Женская конференция церкви",
+    heroDate: "Место проведения • Суббота, Месяц День, 2026 • 9:00 — 16:00",
+    speakerHeader: "Приглашенный спикер",
+    speakerRole: "Пастор / Автор / Спикер",
+    speakerBio: "Оксана поделится духовным ростом, построением общины и практическими инструментами для ежедневного обновления.",
+    signupHeader: "Регистрация",
+    membershipLabel: "Вы участник или не участник?",
+    daysLabel: "В какие дни вы можете присутствовать?",
+    fridayText: "Пятница",
+    saturdayText: "Суббота",
+    paymentLabel: "Способ оплаты",
+    submitBtn: "Отправить регистрацию",
+    questionHeader: "Задать вопрос",
+    submitQuestionBtn: "Отправить вопрос",
+    costMember: "Стоимость: $50",
+    costNonMember: "Стоимость: $70",
+    cashInstructions: "Пожалуйста, принесите наличные на регистрационный стол."
+  }
+};
+
+let selectedLang = "en";
+
+// --- LANGUAGE SELECT ---
+function setLanguage(lang){
+  selectedLang = lang;
+  document.getElementById("languageSelection").classList.add("hidden");
+  document.getElementById("mainPage").classList.remove("hidden");
+  applyLanguage();
+}
+
+function applyLanguage(){
+  const data = languageData[selectedLang];
+  document.getElementById("heroTitle").textContent = data.heroTitle;
+  document.getElementById("heroDate").textContent = data.heroDate;
+  document.getElementById("speakerHeader").textContent = data.speakerHeader;
+  document.getElementById("speakerRole").textContent = data.speakerRole;
+  document.getElementById("speakerBio").textContent = data.speakerBio;
+  document.getElementById("signupHeader").textContent = data.signupHeader;
+  document.getElementById("membershipLabel").textContent = data.membershipLabel;
+  document.getElementById("daysLabel").textContent = data.daysLabel;
+  document.getElementById("fridayText").textContent = data.fridayText;
+  document.getElementById("saturdayText").textContent = data.saturdayText;
+  document.getElementById("paymentLabel").textContent = data.paymentLabel;
+  document.getElementById("submitBtn").textContent = data.submitBtn;
+  document.getElementById("questionHeader").textContent = data.questionHeader;
+  document.getElementById("submitQuestionBtn").textContent = data.submitQuestionBtn;
+}
+
+// --- COST DISPLAY ---
 const membershipType = document.getElementById('membershipType');
 const costDisplay = document.getElementById('costDisplay');
 membershipType.addEventListener('change', () => {
-  costDisplay.textContent = membershipType.value === "Member" ? "Cost: $50"
-    : membershipType.value === "Non-Member" ? "Cost: $70"
+  const data = languageData[selectedLang];
+  costDisplay.textContent = membershipType.value === "Member" ? data.costMember
+    : membershipType.value === "Non-Member" ? data.costNonMember
     : "Select member type to see cost.";
 });
 
-// Payment instructions
+// --- PAYMENT INSTRUCTIONS ---
 const paymentMethodSelect = document.getElementById('paymentMethod');
 const paymentInstructions = document.getElementById('paymentInstructions');
-const paymentQR = document.getElementById('paymentQR');
-let currentPaymentLink = '';
+let currentPaymentLink = "https://www.paypal.com/paypalme/YOUR_PAYPAL_LINK";
 
 paymentMethodSelect.addEventListener('change', () => {
-  const val = paymentMethodSelect.value;
-  paymentQR.classList.add('hidden');
   paymentInstructions.classList.add('hidden');
-
-  if(val==="PayPal"){
-    currentPaymentLink = "https://www.paypal.com/paypalme/YOUR_PAYPAL_LINK";
-    paymentInstructions.innerHTML = 'Scan QR or click link to pay via PayPal.';
-    paymentInstructions.classList.remove('hidden');
-    paymentQR.src = `https://chart.googleapis.com/chart?cht=qr&chl=${encodeURIComponent(currentPaymentLink)}&chs=200x200&chld=L|0`;
-    paymentQR.classList.remove('hidden');
-  } else if(val==="Venmo"){
-    currentPaymentLink = "https://venmo.com/YOUR_VENMO_HANDLE";
-    paymentInstructions.innerHTML = 'Scan QR or click link to pay via Venmo.';
-    paymentInstructions.classList.remove('hidden');
-    paymentQR.src = `https://chart.googleapis.com/chart?cht=qr&chl=${encodeURIComponent(currentPaymentLink)}&chs=200x200&chld=L|0`;
-    paymentQR.classList.remove('hidden');
-  } else if(val==="Cash"){
-    currentPaymentLink = '';
-    paymentInstructions.innerHTML = 'Please bring cash to registration table.';
+  if(paymentMethodSelect.value==="Cash"){
+    paymentInstructions.textContent = languageData[selectedLang].cashInstructions;
     paymentInstructions.classList.remove('hidden');
   }
 });
 
-// Signup form to Airtable
+// --- SIGNUP FORM ---
 document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const formMessage = document.getElementById('formMessage');
   formMessage.textContent = "Submitting...";
 
-  const data = new FormData(e.target);
+  const dataForm = new FormData(e.target);
   const payload = {};
-  data.forEach((value,key)=>{
-    if(key==='days'){ 
-      if(!payload[key]) payload[key]=[];
-      payload[key].push(value);
-    }
+  dataForm.forEach((value,key)=>{
+    if(key==='days'){ if(!payload[key]) payload[key]=[]; payload[key].push(value);}
     else payload[key]=value;
   });
 
@@ -173,18 +236,20 @@ document.getElementById('signupForm').addEventListener('submit', async (e)=>{
         Authorization: `Bearer ${airtableToken}`,
         'Content-Type':'application/json'
       },
-      body: JSON.stringify({
-        fields: payload
-      })
+      body: JSON.stringify({fields: payload})
     });
 
     if(res.ok){
-      formMessage.textContent="Thank you! Preparing payment...";
       e.target.reset();
       costDisplay.textContent="Select member type to see cost.";
       paymentInstructions.classList.add('hidden');
-      paymentQR.classList.add('hidden');
-      if(currentPaymentLink) setTimeout(()=>window.location.href=currentPaymentLink,1500);
+
+      if(paymentMethodSelect.value==="PayPal"){
+        window.open(currentPaymentLink,"_blank");
+        formMessage.textContent = languageData[selectedLang].submitBtn + " sent! Redirecting to PayPal...";
+      } else {
+        formMessage.textContent = "Registration submitted!";
+      }
     } else {
       const err = await res.json();
       formMessage.textContent="Error: "+err.error?.message;
@@ -195,14 +260,13 @@ document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   }
 });
 
-// Question form to Airtable
+// --- QUESTION FORM ---
 document.getElementById('questionForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const msg = document.getElementById('questionMessage');
   msg.textContent="Submitting...";
-
-  const data = new FormData(e.target);
-  const question = data.get('question');
+  const dataForm = new FormData(e.target);
+  const question = dataForm.get('question');
 
   try{
     const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableQuestions}`, {
@@ -211,11 +275,7 @@ document.getElementById('questionForm').addEventListener('submit', async (e)=>{
         Authorization: `Bearer ${airtableToken}`,
         'Content-Type':'application/json'
       },
-      body: JSON.stringify({
-        fields: {
-          Question: question
-        }
-      })
+      body: JSON.stringify({fields:{Question: question}})
     });
 
     if(res.ok){
@@ -231,7 +291,6 @@ document.getElementById('questionForm').addEventListener('submit', async (e)=>{
   }
 });
 </script>
+
 </body>
 </html>
-
-
