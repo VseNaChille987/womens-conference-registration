@@ -27,7 +27,7 @@ label{font-weight:500;margin-top:8px;}
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 20px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 .checkbox-group label {
@@ -40,7 +40,7 @@ label{font-weight:500;margin-top:8px;}
 @media(max-width:500px){
   .checkbox-group {
     flex-direction: column; 
-    gap: 12px; 
+    gap: 8px; 
     align-items: flex-start;
   }
   .checkbox-group label {
@@ -119,25 +119,25 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
     </select>
     <p class="muted" id="costDisplay">Select member type to see cost.</p>
 
-    <input type="text" name="firstName" placeholder="First Name" required>
-    <input type="text" name="lastName" placeholder="Last Name" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="tel" name="phone" placeholder="Phone" required>
+    <input type="text" name="First Name" placeholder="First Name" required>
+    <input type="text" name="Last Name" placeholder="Last Name" required>
+    <input type="email" name="Email" placeholder="Email" required>
+    <input type="tel" name="Phone" placeholder="Phone" required>
 
     <label id="daysLabel">Which days can you attend?</label>
     <div class="checkbox-group">
       <label>
-        <input type="checkbox" name="days" value="Friday">
+        <input type="checkbox" name="Days" value="Friday">
         <span id="fridayText">Friday</span>
       </label>
       <label>
-        <input type="checkbox" name="days" value="Saturday">
+        <input type="checkbox" name="Days" value="Saturday">
         <span id="saturdayText">Saturday</span>
       </label>
     </div>
 
     <label id="paymentLabel">Payment Method</label>
-    <select name="paymentMethod" id="paymentMethod" required>
+    <select name="Payment Method" id="paymentMethod" required>
       <option value="">Select payment method</option>
       <option value="PayPal">PayPal</option>
       <option value="Cash">Cash</option>
@@ -154,7 +154,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
 <section class="card">
   <h2 id="questionHeader">Submit a Question</h2>
   <form id="questionForm">
-    <textarea name="question" placeholder="Your question" rows="4" required></textarea>
+    <textarea name="Question" placeholder="Your question" rows="4" required></textarea>
     <button type="submit" class="btn" id="submitQuestionBtn">Submit Question</button>
     <p class="muted" id="questionMessage"></p>
   </form>
@@ -183,8 +183,7 @@ const languageData={
       questionHeader:"Submit a Question", submitQuestionBtn:"Submit Question",
       costMember:"Cost: $50", costNonMember:"Cost: $70",
       cashInstructions:"Please bring cash to registration table.",
-      scheduleItems:["Friday 4 PM - Start","Friday 5 PM - Break","Saturday 9 AM - Session","Saturday 12 PM - Lunch","Saturday 1 PM - Workshop"],
-      phonePlaceholder:"Phone", firstNamePlaceholder:"First Name", lastNamePlaceholder:"Last Name", emailPlaceholder:"Email"
+      scheduleItems:["Friday 4 PM - Start","Friday 5 PM - Break","Saturday 9 AM - Session","Saturday 12 PM - Lunch","Saturday 1 PM - Workshop"]
   },
   ru:{heroTitle:"Женская конференция церкви", heroDate:"Место проведения • Суббота, Месяц День, 2026 • 9:00 — 16:00",
       themeHeader:"Тема конференции", themeVerse:"\"Ваша цитата из Библии здесь\"", speakerHeader:"Приглашенный спикер",
@@ -195,8 +194,7 @@ const languageData={
       questionHeader:"Задать вопрос", submitQuestionBtn:"Отправить вопрос",
       costMember:"Стоимость: $50", costNonMember:"Стоимость: $70",
       cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.",
-      scheduleItems:["Пятница 16:00 - Начало","Пятница 17:00 - Перерыв","Суббота 9:00 - Сессия","Суббота 12:00 - Обед","Суббота 13:00 - Мастер-класс"],
-      phonePlaceholder:"Телефон", firstNamePlaceholder:"Имя", lastNamePlaceholder:"Фамилия", emailPlaceholder:"Эл. почта"
+      scheduleItems:["Пятница 16:00 - Начало","Пятница 17:00 - Перерыв","Суббота 9:00 - Сессия","Суббота 12:00 - Обед","Суббота 13:00 - Мастер-класс"]
   }
 };
 
@@ -230,10 +228,6 @@ function applyLanguage(){
   document.getElementById("submitBtn").textContent=data.submitBtn;
   document.getElementById("questionHeader").textContent=data.questionHeader;
   document.getElementById("submitQuestionBtn").textContent=data.submitQuestionBtn;
-  document.querySelector('input[name="phone"]').placeholder=data.phonePlaceholder;
-  document.querySelector('input[name="firstName"]').placeholder=data.firstNamePlaceholder;
-  document.querySelector('input[name="lastName"]').placeholder=data.lastNamePlaceholder;
-  document.querySelector('input[name="email"]').placeholder=data.emailPlaceholder;
   const scheduleList = document.getElementById("scheduleList");
   scheduleList.innerHTML="";
   data.scheduleItems.forEach(item=>{
@@ -273,11 +267,17 @@ document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   const formMessage=document.getElementById('formMessage');
   formMessage.textContent="Submitting...";
   const dataForm=new FormData(e.target);
-  const payload={};
-  dataForm.forEach((value,key)=>{
-    if(key==='days'){if(!payload[key]) payload[key]=[];payload[key].push(value);} 
-    else payload[key]=value;
-  });
+
+  const payload = {
+    "Membership": dataForm.get("Membership"),
+    "First Name": dataForm.get("First Name"),
+    "Last Name": dataForm.get("Last Name"),
+    "Email": dataForm.get("Email"),
+    "Phone": dataForm.get("Phone"),
+    "Days": dataForm.getAll("Days"),
+    "Payment Method": dataForm.get("Payment Method")
+  };
+
   try{
     const res=await fetch(`https://api.airtable.com/v0/${baseId}/${tableRegistrations}`,{
       method:'POST',
@@ -302,7 +302,7 @@ document.getElementById('questionForm').addEventListener('submit', async (e)=>{
   const msg=document.getElementById('questionMessage');
   msg.textContent="Submitting...";
   const dataForm=new FormData(e.target);
-  const question=dataForm.get('question');
+  const question=dataForm.get('Question');
   try{
     const res=await fetch(`https://api.airtable.com/v0/${baseId}/${tableQuestions}`,{
       method:'POST',
