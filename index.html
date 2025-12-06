@@ -57,6 +57,21 @@ label{font-weight:500;margin-top:8px;}
   <p id="heroDate">Location • Saturday, Month Day, 2026 • 9:00 AM — 4:00 PM</p>
 </section>
 
+<!-- THEME & BIBLE VERSE -->
+<section class="card">
+  <h2 id="themeHeader">Conference Theme</h2>
+  <p id="themeVerse">"Your Bible verse here"</p>
+</section>
+
+<!-- SCHEDULE -->
+<section class="card">
+  <h2 id="scheduleHeader">Schedule</h2>
+  <ul id="scheduleList">
+    <li>Friday: 4:00 PM Start, 5:00 PM Break, ...</li>
+    <li>Saturday: ...</li>
+  </ul>
+</section>
+
 <!-- SPEAKER -->
 <section class="card">
   <h2 id="speakerHeader">Guest Speaker</h2>
@@ -64,7 +79,7 @@ label{font-weight:500;margin-top:8px;}
     <img src="guest.jpg" alt="Oksana Grabchuk">
     <div class="details">
       <h3 id="speakerName">Oksana Grabchuk</h3>
-      <p class="muted" id="speakerRole"> Author / Speaker</p>
+      <p class="muted" id="speakerRole">Pastor / Author / Speaker</p>
       <p class="bio" id="speakerBio">Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.</p>
     </div>
   </div>
@@ -127,8 +142,76 @@ const tableRegistrations = "tblapX4iXV1bHPC6J";
 const tableQuestions = "tblYxvkoQROYmY2ou";
 
 const languageData = {
-  en: { heroTitle:"Church Women’s Conference", heroDate:"Location • Saturday, Month Day, 2026 • 9:00 AM — 4:00 PM", speakerHeader:"Guest Speaker", speakerRole:"Pastor / Author / Speaker", speakerBio:"Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.", signupHeader:"Sign Up", membershipLabel:"Are you a member or non-member?", daysLabel:"Which days can you attend?", fridayText:"Friday", saturdayText:"Saturday", paymentLabel:"Payment Method", submitBtn:"Submit Registration", questionHeader:"Submit a Question", submitQuestionBtn:"Submit Question", costMember:"Cost: $50", costNonMember:"Cost: $70", cashInstructions:"Please bring cash to registration table.", selectCost:"Select member type to see cost.", submitting:"Submitting...", submittedPaypal:"Registration sent! Redirecting to PayPal...", submittedCash:"Registration submitted!", errorSubmit:"Error submitting form.", memberOption:"Member", nonMemberOption:"Non-Member", firstNamePlaceholder:"First Name", lastNamePlaceholder:"Last Name", emailPlaceholder:"Email", phonePlaceholder:"Phone", questionPlaceholder:"Your question" },
-  ru: { heroTitle:"Женская конференция церкви", heroDate:"Место проведения • Суббота, Месяц День, 2026 • 9:00 — 16:00", speakerHeader:"Приглашенный спикер", speakerRole:"Пастор / Автор / Спикер", speakerBio:"Оксана поделится духовным ростом, построением общины и практическими инструментами для ежедневного обновления.", signupHeader:"Регистрация", membershipLabel:"Вы участник или не участник?", daysLabel:"В какие дни вы можете присутствовать?", fridayText:"Пятница", saturdayText:"Суббота", paymentLabel:"Способ оплаты", submitBtn:"Отправить регистрацию", questionHeader:"Задать вопрос", submitQuestionBtn:"Отправить вопрос", costMember:"Стоимость: $50", costNonMember:"Стоимость: $70", cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.", selectCost:"Выберите тип участника, чтобы увидеть стоимость.", submitting:"Отправка...", submittedPaypal:"Регистрация отправлена! Перенаправление на PayPal...", submittedCash:"Регистрация отправлена!", errorSubmit:"Ошибка при отправке формы.", memberOption:"Участник", nonMemberOption:"Не участник", firstNamePlaceholder:"Имя", lastNamePlaceholder:"Фамилия", emailPlaceholder:"Эл. почта", phonePlaceholder:"Телефон", questionPlaceholder:"Ваш вопрос" }
+  en: {
+    heroTitle:"Church Women’s Conference",
+    heroDate:"Location • Saturday, Month Day, 2026 • 9:00 AM — 4:00 PM",
+    themeHeader:"Conference Theme",
+    themeVerse:'"Your Bible verse here"',
+    scheduleHeader:"Schedule",
+    scheduleList:["Friday: 4:00 PM Start, 5:00 PM Break, ...","Saturday: ..."],
+    speakerHeader:"Guest Speaker",
+    speakerRole:"Pastor / Author / Speaker",
+    speakerBio:"Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.",
+    signupHeader:"Sign Up",
+    membershipLabel:"Are you a member or non-member?",
+    daysLabel:"Which days can you attend?",
+    fridayText:"Friday",
+    saturdayText:"Saturday",
+    paymentLabel:"Payment Method",
+    submitBtn:"Submit Registration",
+    questionHeader:"Submit a Question",
+    submitQuestionBtn:"Submit Question",
+    costMember:"Cost: $50",
+    costNonMember:"Cost: $70",
+    cashInstructions:"Please bring cash to registration table.",
+    selectCost:"Select member type to see cost.",
+    submitting:"Submitting...",
+    submittedPaypal:"Registration sent! Redirecting to PayPal...",
+    submittedCash:"Registration submitted!",
+    errorSubmit:"Error submitting form.",
+    memberOption:"Member",
+    nonMemberOption:"Non-Member",
+    firstNamePlaceholder:"First Name",
+    lastNamePlaceholder:"Last Name",
+    emailPlaceholder:"Email",
+    phonePlaceholder:"Phone",
+    questionPlaceholder:"Your question"
+  },
+  ru: {
+    heroTitle:"Женская конференция церкви",
+    heroDate:"Место проведения • Суббота, Месяц День, 2026 • 9:00 — 16:00",
+    themeHeader:"Тема конференции",
+    themeVerse:'"Ваш стих из Библии здесь"',
+    scheduleHeader:"Расписание",
+    scheduleList:["Пятница: 16:00 Начало, 17:00 Перерыв, ...","Суббота: ..."],
+    speakerHeader:"Приглашенный спикер",
+    speakerRole:"Пастор / Автор / Спикер",
+    speakerBio:"Оксана поделится духовным ростом, построением общины и практическими инструментами для ежедневного обновления.",
+    signupHeader:"Регистрация",
+    membershipLabel:"Вы участник или не участник?",
+    daysLabel:"В какие дни вы можете присутствовать?",
+    fridayText:"Пятница",
+    saturdayText:"Суббота",
+    paymentLabel:"Способ оплаты",
+    submitBtn:"Отправить регистрацию",
+    questionHeader:"Задать вопрос",
+    submitQuestionBtn:"Отправить вопрос",
+    costMember:"Стоимость: $50",
+    costNonMember:"Стоимость: $70",
+    cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.",
+    selectCost:"Выберите тип участника, чтобы увидеть стоимость.",
+    submitting:"Отправка...",
+    submittedPaypal:"Регистрация отправлена! Перенаправление на PayPal...",
+    submittedCash:"Регистрация отправлена!",
+    errorSubmit:"Ошибка при отправке формы.",
+    memberOption:"Участник",
+    nonMemberOption:"Не участник",
+    firstNamePlaceholder:"Имя",
+    lastNamePlaceholder:"Фамилия",
+    emailPlaceholder:"Эл. почта",
+    phonePlaceholder:"Телефон",
+    questionPlaceholder:"Ваш вопрос"
+  }
 };
 
 let selectedLang = "en";
@@ -143,11 +226,31 @@ function setLanguage(lang){
 
 function applyLanguage(){
   const data = languageData[selectedLang];
+
+  // Hero
   document.getElementById("heroTitle").textContent = data.heroTitle;
   document.getElementById("heroDate").textContent = data.heroDate;
+
+  // Theme & Bible Verse
+  document.getElementById("themeHeader").textContent = data.themeHeader;
+  document.getElementById("themeVerse").textContent = data.themeVerse;
+
+  // Schedule
+  document.getElementById("scheduleHeader").textContent = data.scheduleHeader;
+  const scheduleListEl = document.getElementById("scheduleList");
+  scheduleListEl.innerHTML = "";
+  data.scheduleList.forEach(item=>{
+    const li = document.createElement("li");
+    li.textContent = item;
+    scheduleListEl.appendChild(li);
+  });
+
+  // Speaker
   document.getElementById("speakerHeader").textContent = data.speakerHeader;
   document.getElementById("speakerRole").textContent = data.speakerRole;
   document.getElementById("speakerBio").textContent = data.speakerBio;
+
+  // Sign Up
   document.getElementById("signupHeader").textContent = data.signupHeader;
   document.getElementById("membershipLabel").textContent = data.membershipLabel;
   document.getElementById("daysLabel").textContent = data.daysLabel;
@@ -155,8 +258,6 @@ function applyLanguage(){
   document.getElementById("saturdayText").textContent = data.saturdayText;
   document.getElementById("paymentLabel").textContent = data.paymentLabel;
   document.getElementById("submitBtn").textContent = data.submitBtn;
-  document.getElementById("questionHeader").textContent = data.questionHeader;
-  document.getElementById("submitQuestionBtn").textContent = data.submitQuestionBtn;
 
   const membershipSelect = document.getElementById('membershipType');
   membershipSelect.options[0].textContent = data.selectCost;
