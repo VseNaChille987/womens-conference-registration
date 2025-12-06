@@ -27,9 +27,8 @@ label{font-weight:500;margin-top:8px;}
 .btn{display:inline-block;padding:12px 18px;border-radius:12px;background:white;color:#d14477;font-weight:600;text-decoration:none;box-shadow:0 6px 18px rgba(209,68,119,0.12);cursor:pointer;transition:all 0.2s ease-in-out;}
 .btn:hover{transform:translateY(-2px);}
 .hidden{display:none;}
-.language-selection{text-align:center;margin-top:80px;}
-.language-selection button{margin:0 12px;padding:12px 24px;font-size:16px;border-radius:12px;cursor:pointer;background:var(--accent-1);color:white;border:none;}
-#paymentQR{margin-top:12px;width:200px;height:200px;}
+.language-selection{text-align:center;margin-top:40px;}
+.language-selection button{margin:12px;padding:12px 24px;font-size:16px;border-radius:12px;cursor:pointer;background:var(--accent-1);color:white;border:none;}
 @media(max-width:700px){.speaker{flex-direction:column;align-items:center;text-align:center;}.speaker img{width:160px;height:160px;}}
 </style>
 </head>
@@ -39,7 +38,11 @@ label{font-weight:500;margin-top:8px;}
 
 <!-- LANGUAGE SELECTION -->
 <section id="languageSelection" class="language-selection">
-  <h1>Select Language / Выберите язык</h1>
+  <div class="hero">
+    <img src="logo.png" alt="Conference logo" class="logo">
+    <h1 id="languageHeroTitle">Church Women’s Conference</h1>
+  </div>
+  <h2>Select Language / Выберите язык</h2>
   <button onclick="setLanguage('en')">English</button>
   <button onclick="setLanguage('ru')">Русский</button>
 </section>
@@ -74,8 +77,8 @@ label{font-weight:500;margin-top:8px;}
     <label id="membershipLabel">Are you a member or non-member?</label>
     <select name="membershipType" id="membershipType" required>
       <option value="">Select...</option>
-      <option value="Member">Member</option>
-      <option value="Non-Member">Non-Member</option>
+      <option value="Member" id="memberOption">Member</option>
+      <option value="Non-Member" id="nonMemberOption">Non-Member</option>
     </select>
     <p class="muted" id="costDisplay">Select member type to see cost.</p>
 
@@ -142,7 +145,19 @@ const languageData = {
     submitQuestionBtn: "Submit Question",
     costMember: "Cost: $50",
     costNonMember: "Cost: $70",
-    cashInstructions: "Please bring cash to registration table."
+    cashInstructions: "Please bring cash to registration table.",
+    selectCost: "Select member type to see cost.",
+    submitting: "Submitting...",
+    submittedPaypal: "Registration sent! Redirecting to PayPal...",
+    submittedCash: "Registration submitted!",
+    errorSubmit: "Error submitting form.",
+    memberOption: "Member",
+    nonMemberOption: "Non-Member",
+    firstNamePlaceholder: "First Name",
+    lastNamePlaceholder: "Last Name",
+    emailPlaceholder: "Email",
+    phonePlaceholder: "Phone",
+    questionPlaceholder: "Your question"
   },
   ru: {
     heroTitle: "Женская конференция церкви",
@@ -161,7 +176,19 @@ const languageData = {
     submitQuestionBtn: "Отправить вопрос",
     costMember: "Стоимость: $50",
     costNonMember: "Стоимость: $70",
-    cashInstructions: "Пожалуйста, принесите наличные на регистрационный стол."
+    cashInstructions: "Пожалуйста, принесите наличные на регистрационный стол.",
+    selectCost: "Выберите тип участника, чтобы увидеть стоимость.",
+    submitting: "Отправка...",
+    submittedPaypal: "Регистрация отправлена! Перенаправление на PayPal...",
+    submittedCash: "Регистрация отправлена!",
+    errorSubmit: "Ошибка при отправке формы.",
+    memberOption: "Участник",
+    nonMemberOption: "Не участник",
+    firstNamePlaceholder: "Имя",
+    lastNamePlaceholder: "Фамилия",
+    emailPlaceholder: "Эл. почта",
+    phonePlaceholder: "Телефон",
+    questionPlaceholder: "Ваш вопрос"
   }
 };
 
@@ -177,6 +204,8 @@ function setLanguage(lang){
 
 function applyLanguage(){
   const data = languageData[selectedLang];
+
+  // Update main texts
   document.getElementById("heroTitle").textContent = data.heroTitle;
   document.getElementById("heroDate").textContent = data.heroDate;
   document.getElementById("speakerHeader").textContent = data.speakerHeader;
@@ -191,23 +220,40 @@ function applyLanguage(){
   document.getElementById("submitBtn").textContent = data.submitBtn;
   document.getElementById("questionHeader").textContent = data.questionHeader;
   document.getElementById("submitQuestionBtn").textContent = data.submitQuestionBtn;
+
+  // Update dropdown
+  const membershipSelect = document.getElementById('membershipType');
+  membershipSelect.options[0].textContent = data.selectCost;
+  membershipSelect.options[1].textContent = data.memberOption;
+  membershipSelect.options[2].textContent = data.nonMemberOption;
+
+  // Update placeholders
+  document.querySelector('input[name="firstName"]').placeholder = data.firstNamePlaceholder;
+  document.querySelector('input[name="lastName"]').placeholder = data.lastNamePlaceholder;
+  document.querySelector('input[name="email"]').placeholder = data.emailPlaceholder;
+  document.querySelector('input[name="phone"]').placeholder = data.phonePlaceholder;
+  document.querySelector('textarea[name="question"]').placeholder = data.questionPlaceholder;
+
+  // Update first page header
+  document.getElementById("languageHeroTitle").textContent = data.heroTitle;
+
+  // Reset cost display
+  document.getElementById("costDisplay").textContent = data.selectCost;
 }
 
 // --- COST DISPLAY ---
-const membershipType = document.getElementById('membershipType');
 const costDisplay = document.getElementById('costDisplay');
-membershipType.addEventListener('change', () => {
+const membershipTypeSelect = document.getElementById('membershipType');
+membershipTypeSelect.addEventListener('change', () => {
   const data = languageData[selectedLang];
-  costDisplay.textContent = membershipType.value === "Member" ? data.costMember
-    : membershipType.value === "Non-Member" ? data.costNonMember
-    : "Select member type to see cost.";
+  costDisplay.textContent = membershipTypeSelect.value === "Member" ? data.costMember
+    : membershipTypeSelect.value === "Non-Member" ? data.costNonMember
+    : data.selectCost;
 });
 
 // --- PAYMENT INSTRUCTIONS ---
 const paymentMethodSelect = document.getElementById('paymentMethod');
 const paymentInstructions = document.getElementById('paymentInstructions');
-let currentPaymentLink = "https://www.paypal.com/paypalme/YOUR_PAYPAL_LINK";
-
 paymentMethodSelect.addEventListener('change', () => {
   paymentInstructions.classList.add('hidden');
   if(paymentMethodSelect.value==="Cash"){
@@ -216,17 +262,48 @@ paymentMethodSelect.addEventListener('change', () => {
   }
 });
 
-// --- SIGNUP FORM ---
+// --- PAYPAL LINKS ---
+const paypalLinks = {
+  Member: "https://paypal.me/YOUR_MEMBER_LINK",
+  "Non-Member": "https://paypal.me/YOUR_NON_MEMBER_LINK"
+};
+
+// --- SIGNUP FORM SUBMISSION ---
 document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const formMessage = document.getElementById('formMessage');
-  formMessage.textContent = "Submitting...";
+  formMessage.textContent = languageData[selectedLang].submitting;
 
   const dataForm = new FormData(e.target);
   const payload = {};
+
   dataForm.forEach((value,key)=>{
-    if(key==='days'){ if(!payload[key]) payload[key]=[]; payload[key].push(value);}
-    else payload[key]=value;
+    switch(key){
+      case 'membershipType':
+        payload['Membership'] = value;
+        break;
+      case 'firstName':
+        payload['First Name'] = value;
+        break;
+      case 'lastName':
+        payload['Last Name'] = value;
+        break;
+      case 'email':
+        payload['Email'] = value;
+        break;
+      case 'phone':
+        payload['Phone'] = value;
+        break;
+      case 'days':
+        if(!payload['Days']) payload['Days'] = [];
+        payload['Days'].push(value);
+        break;
+      case 'paymentMethod':
+        payload['Payment Method'] = value;
+        break;
+      default:
+        payload[key] = value;
+    }
   });
 
   try{
@@ -241,30 +318,30 @@ document.getElementById('signupForm').addEventListener('submit', async (e)=>{
 
     if(res.ok){
       e.target.reset();
-      costDisplay.textContent="Select member type to see cost.";
+      costDisplay.textContent = languageData[selectedLang].selectCost;
       paymentInstructions.classList.add('hidden');
 
       if(paymentMethodSelect.value==="PayPal"){
-        window.open(currentPaymentLink,"_blank");
-        formMessage.textContent = languageData[selectedLang].submitBtn + " sent! Redirecting to PayPal...";
+        const selectedMembership = membershipTypeSelect.value;
+        window.open(paypalLinks[selectedMembership], "_blank");
+        formMessage.textContent = languageData[selectedLang].submittedPaypal;
       } else {
-        formMessage.textContent = "Registration submitted!";
+        formMessage.textContent = languageData[selectedLang].submittedCash;
       }
     } else {
       const err = await res.json();
-      formMessage.textContent="Error: "+err.error?.message;
+      formMessage.textContent = languageData[selectedLang].errorSubmit + " " + (err.error?.message || "");
     }
-
   }catch(err){
-    formMessage.textContent="Error submitting form.";
+    formMessage.textContent = languageData[selectedLang].errorSubmit;
   }
 });
 
-// --- QUESTION FORM ---
+// --- QUESTION FORM SUBMISSION ---
 document.getElementById('questionForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const msg = document.getElementById('questionMessage');
-  msg.textContent="Submitting...";
+  msg.textContent=languageData[selectedLang].submitting;
   const dataForm = new FormData(e.target);
   const question = dataForm.get('question');
 
@@ -279,7 +356,7 @@ document.getElementById('questionForm').addEventListener('submit', async (e)=>{
     });
 
     if(res.ok){
-      msg.textContent="Thank you! Your question has been submitted.";
+      msg.textContent=languageData[selectedLang].submittedCash;
       e.target.reset();
     } else {
       const err = await res.json();
