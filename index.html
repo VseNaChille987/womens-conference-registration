@@ -22,8 +22,9 @@ h2{margin:0 0 10px 0;color:#d14477;}
 .bio{margin-top:8px;color:var(--muted);}
 form{display:flex;flex-direction:column;gap:12px;align-items:center;}
 input,select,textarea{padding:10px;border-radius:8px;border:1px solid #ccc;width:100%;max-width:400px;margin:0 auto;}
-label{font-weight:500;margin-top:8px;display:flex;align-items:center;gap:8px;}
+label{font-weight:500;margin-top:8px;}
 .checkbox-group{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.checkbox-group label{display:flex;flex-direction:column;align-items:center;gap:4px;}
 .btn{display:inline-block;padding:14px 24px;border-radius:12px;background:white;color:#d14477;font-weight:600;text-decoration:none;box-shadow:0 6px 18px rgba(209,68,119,0.12);cursor:pointer;transition:all 0.2s ease-in-out;font-size:18px;}
 .btn:hover{transform:translateY(-2px);}
 .hidden{display:none;}
@@ -81,9 +82,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
 <!-- SCHEDULE -->
 <section class="card">
   <h2 id="scheduleHeader">Schedule</h2>
-  <ul id="scheduleList">
-    <!-- Dynamic schedule items will appear here -->
-  </ul>
+  <ul id="scheduleList"></ul>
 </section>
 
 <!-- SIGN UP -->
@@ -101,11 +100,18 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
     <input type="text" name="firstName" placeholder="First Name" required>
     <input type="text" name="lastName" placeholder="Last Name" required>
     <input type="email" name="email" placeholder="Email" required>
+    <input type="tel" name="phone" placeholder="Phone" required>
 
     <label id="daysLabel">Which days can you attend?</label>
     <div class="checkbox-group">
-      <label><input type="checkbox" name="days" value="Friday"> <span id="fridayText">Friday</span></label>
-      <label><input type="checkbox" name="days" value="Saturday"> <span id="saturdayText">Saturday</span></label>
+      <label>
+        <input type="checkbox" name="days" value="Friday">
+        <span id="fridayText">Friday</span>
+      </label>
+      <label>
+        <input type="checkbox" name="days" value="Saturday">
+        <span id="saturdayText">Saturday</span>
+      </label>
     </div>
 
     <label id="paymentLabel">Payment Method</label>
@@ -153,7 +159,8 @@ const languageData={
       fridayText:"Friday", saturdayText:"Saturday", paymentLabel:"Payment Method", submitBtn:"Submit Registration",
       questionHeader:"Submit a Question", submitQuestionBtn:"Submit Question", costMember:"Cost: $50", costNonMember:"Cost: $70",
       cashInstructions:"Please bring cash to registration table.",
-      scheduleItems:["Friday 4 PM - Start","Friday 5 PM - Break","Saturday 9 AM - Session","Saturday 12 PM - Lunch","Saturday 1 PM - Workshop"]
+      scheduleItems:["Friday 4 PM - Start","Friday 5 PM - Break","Saturday 9 AM - Session","Saturday 12 PM - Lunch","Saturday 1 PM - Workshop"],
+      phonePlaceholder:"Phone"
   },
   ru:{heroTitle:"Женская конференция церкви", heroDate:"Место проведения • Суббота, Месяц День, 2026 • 9:00 — 16:00",
       themeHeader:"Тема конференции", themeVerse:"\"Ваша цитата из Библии здесь\"", speakerHeader:"Приглашенный спикер",
@@ -162,7 +169,8 @@ const languageData={
       fridayText:"Пятница", saturdayText:"Суббота", paymentLabel:"Способ оплаты", submitBtn:"Отправить регистрацию",
       questionHeader:"Задать вопрос", submitQuestionBtn:"Отправить вопрос", costMember:"Стоимость: $50", costNonMember:"Стоимость: $70",
       cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.",
-      scheduleItems:["Пятница 16:00 - Начало","Пятница 17:00 - Перерыв","Суббота 9:00 - Сессия","Суббота 12:00 - Обед","Суббота 13:00 - Мастер-класс"]
+      scheduleItems:["Пятница 16:00 - Начало","Пятница 17:00 - Перерыв","Суббота 9:00 - Сессия","Суббота 12:00 - Обед","Суббота 13:00 - Мастер-класс"],
+      phonePlaceholder:"Телефон"
   }
 };
 
@@ -192,6 +200,7 @@ function applyLanguage(){
   document.getElementById("submitBtn").textContent = data.submitBtn;
   document.getElementById("questionHeader").textContent = data.questionHeader;
   document.getElementById("submitQuestionBtn").textContent = data.submitQuestionBtn;
+  document.querySelector('input[name="phone"]').placeholder = data.phonePlaceholder;
 
   // Update schedule dynamically
   const scheduleList = document.getElementById("scheduleList");
