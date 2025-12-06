@@ -254,6 +254,8 @@ membershipTypeSelect.addEventListener('change', () => {
 // --- PAYMENT INSTRUCTIONS ---
 const paymentMethodSelect = document.getElementById('paymentMethod');
 const paymentInstructions = document.getElementById('paymentInstructions');
+const paypalLink = "https://www.paypal.com/donate?token=CvoGFrxQa-Zj7ZXYH6xH5YvuqjivrARQdnwxkkXz5X85dtGKXRgW1UhkHZNCrCihlgZ0-Bl310FC3za-#";
+
 paymentMethodSelect.addEventListener('change', () => {
   paymentInstructions.classList.add('hidden');
   if(paymentMethodSelect.value==="Cash"){
@@ -261,12 +263,6 @@ paymentMethodSelect.addEventListener('change', () => {
     paymentInstructions.classList.remove('hidden');
   }
 });
-
-// --- PAYPAL LINKS ---
-const paypalLinks = {
-  Member: "https://paypal.me/YOUR_MEMBER_LINK",
-  "Non-Member": "https://paypal.me/YOUR_NON_MEMBER_LINK"
-};
 
 // --- SIGNUP FORM SUBMISSION ---
 document.getElementById('signupForm').addEventListener('submit', async (e)=>{
@@ -277,6 +273,7 @@ document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   const dataForm = new FormData(e.target);
   const payload = {};
 
+  const dayMapping = {"Friday":"Friday","Saturday":"Saturday"}; // Adjust if needed
   dataForm.forEach((value,key)=>{
     switch(key){
       case 'membershipType':
@@ -296,7 +293,7 @@ document.getElementById('signupForm').addEventListener('submit', async (e)=>{
         break;
       case 'days':
         if(!payload['Days']) payload['Days'] = [];
-        payload['Days'].push(value);
+        payload['Days'].push(dayMapping[value] || value);
         break;
       case 'paymentMethod':
         payload['Payment Method'] = value;
@@ -322,9 +319,8 @@ document.getElementById('signupForm').addEventListener('submit', async (e)=>{
       paymentInstructions.classList.add('hidden');
 
       if(paymentMethodSelect.value==="PayPal"){
-        const selectedMembership = membershipTypeSelect.value;
-        window.open(paypalLinks[selectedMembership], "_blank");
         formMessage.textContent = languageData[selectedLang].submittedPaypal;
+        window.open(paypalLink,"_blank");
       } else {
         formMessage.textContent = languageData[selectedLang].submittedCash;
       }
