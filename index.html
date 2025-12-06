@@ -29,9 +29,9 @@ label{font-weight:500;margin-top:8px;}
 .hidden{display:none;}
 .language-selection{text-align:center;margin-top:40px;}
 .language-selection button{margin:12px;padding:12px 24px;font-size:16px;border-radius:12px;cursor:pointer;background:var(--accent-1);color:white;border:none;}
-footer{margin-top:40px;font-size:12px;color:var(--muted);}
 ul#scheduleList{text-align:left;display:inline-block;padding-left:20px;}
 @media(max-width:700px){.speaker{flex-direction:column;align-items:center;text-align:center;}.speaker img{width:160px;height:160px;}}
+footer{margin-top:40px;font-size:12px;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -71,8 +71,8 @@ ul#scheduleList{text-align:left;display:inline-block;padding-left:20px;}
   <div class="speaker">
     <img src="guest.jpg" alt="Oksana Grabchuk">
     <div class="details">
-      <h3 id="speakerName">Oksana Grabchuk</h3>
       <p class="muted" id="speakerPhone">Phone: (123) 456-7890</p>
+      <h3 id="speakerName">Oksana Grabchuk</h3>
       <p class="muted" id="speakerRole">Pastor / Author / Speaker</p>
       <p class="bio" id="speakerBio">Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.</p>
     </div>
@@ -82,7 +82,13 @@ ul#scheduleList{text-align:left;display:inline-block;padding-left:20px;}
 <!-- SCHEDULE -->
 <section class="card">
   <h2 id="scheduleHeader">Schedule</h2>
-  <ul id="scheduleList"></ul>
+  <ul id="scheduleList">
+    <li>Friday 4 PM - Start</li>
+    <li>Friday 5 PM - Break</li>
+    <li>Saturday 9 AM - Session</li>
+    <li>Saturday 12 PM - Lunch</li>
+    <li>Saturday 1 PM - Workshop</li>
+  </ul>
 </section>
 
 <!-- SIGN UP -->
@@ -90,7 +96,7 @@ ul#scheduleList{text-align:left;display:inline-block;padding-left:20px;}
   <h2 id="signupHeader">Sign Up</h2>
   <form id="signupForm">
     <label id="membershipLabel">Are you a member or non-member?</label>
-    <select name="membershipType" id="membershipType" required>
+    <select name="Membership" id="membershipType" required>
       <option value="">Select...</option>
       <option value="Member" id="memberOption">Member</option>
       <option value="Non-Member" id="nonMemberOption">Non-Member</option>
@@ -132,74 +138,101 @@ ul#scheduleList{text-align:left;display:inline-block;padding-left:20px;}
   </form>
 </section>
 
-<footer>© 2025 Church Women's Conference. All Rights Reserved. <a href="admin.html">Admin</a></footer>
+<footer>© 2025 Church Women's Conference. All Rights Reserved.</footer>
 
 </div>
 
 <script>
-const airtableToken="patggy7oHxwXm3DKU.53ec9f4db254b7bfec5a04be665764f22dcb9a0ed6c93318238912a9a8a58a4d";
-const baseId="appP2cm5hgmoANQ7i";
+// --- Airtable Config ---
+const airtableToken= "patggy7oHxwXm3DKU.53ec9f4db254b7bfec5a04be665764f22dcb9a0ed6c93318238912a9a8a58a4d";
+const baseId= "patggy7oHxwXm3DKU.53ec9f4db254b7bfec5a04be665764f22dcb9a0ed6c93318238912a9a8a58a4d";
 const tableRegistrations="tblapX4iXV1bHPC6J";
 const tableQuestions="tblYxvkoQROYmY2ou";
-const tableSchedule="tblSCHEDULE";
-const paypalLink="https://www.paypal.com/donate?token=CvoGFrxQa-Zj7ZXYH6xH5YvuqjivrARQdnwxkkXz5X85dtGKXRgW1UhkHZNCrCihlgZ0-Bl310FC3za-#";
 
+// --- Language ---
 let selectedLang="en";
+const languageData={
+  en:{heroTitle:"Church Women’s Conference", heroDate:"Location • Saturday, Month Day, 2026 • 9:00 AM — 4:00 PM",
+      themeHeader:"Conference Theme", themeVerse:"\"Your Bible verse here\"", speakerHeader:"Guest Speaker",
+      speakerRole:"Pastor / Author / Speaker", speakerBio:"Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.",
+      signupHeader:"Sign Up", membershipLabel:"Are you a member or non-member?", daysLabel:"Which days can you attend?",
+      fridayText:"Friday", saturdayText:"Saturday", paymentLabel:"Payment Method", submitBtn:"Submit Registration",
+      questionHeader:"Submit a Question", submitQuestionBtn:"Submit Question", costMember:"Cost: $50", costNonMember:"Cost: $70",
+      cashInstructions:"Please bring cash to registration table."},
+  ru:{heroTitle:"Женская конференция церкви", heroDate:"Место проведения • Суббота, Месяц День, 2026 • 9:00 — 16:00",
+      themeHeader:"Тема конференции", themeVerse:"\"Ваша цитата из Библии здесь\"", speakerHeader:"Приглашенный спикер",
+      speakerRole:"Пастор / Автор / Спикер", speakerBio:"Оксана поделится духовным ростом, построением общины и практическими инструментами для ежедневного обновления.",
+      signupHeader:"Регистрация", membershipLabel:"Вы участник или не участник?", daysLabel:"В какие дни вы можете присутствовать?",
+      fridayText:"Пятница", saturdayText:"Суббота", paymentLabel:"Способ оплаты", submitBtn:"Отправить регистрацию",
+      questionHeader:"Задать вопрос", submitQuestionBtn:"Отправить вопрос", costMember:"Стоимость: $50", costNonMember:"Стоимость: $70",
+      cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол."}
+};
 
-// LANGUAGE SELECT (translation object omitted for brevity; you can reuse previous)
-function setLanguage(lang){
-  selectedLang=lang;
-  document.getElementById("languageSelection").classList.add("hidden");
-  document.getElementById("mainPage").classList.remove("hidden");
-}
+// --- Language functions ---
+function setLanguage(lang){selectedLang=lang; document.getElementById("languageSelection").classList.add("hidden"); document.getElementById("mainPage").classList.remove("hidden"); applyLanguage();}
+function applyLanguage(){const data=languageData[selectedLang];document.getElementById("heroTitle").textContent=data.heroTitle;document.getElementById("heroDate").textContent=data.heroDate;document.getElementById("themeHeader").textContent=data.themeHeader;document.getElementById("themeVerse").textContent=data.themeVerse;document.getElementById("speakerHeader").textContent=data.speakerHeader;document.getElementById("speakerRole").textContent=data.speakerRole;document.getElementById("speakerBio").textContent=data.speakerBio;document.getElementById("signupHeader").textContent=data.signupHeader;document.getElementById("membershipLabel").textContent=data.membershipLabel;document.getElementById("daysLabel").textContent=data.daysLabel;document.getElementById("fridayText").textContent=data.fridayText;document.getElementById("saturdayText").textContent=data.saturdayText;document.getElementById("paymentLabel").textContent=data.paymentLabel;document.getElementById("submitBtn").textContent=data.submitBtn;document.getElementById("questionHeader").textContent=data.questionHeader;document.getElementById("submitQuestionBtn").textContent=data.submitQuestionBtn;}
 
-// FETCH SCHEDULE
-async function fetchSchedule(){
-  try{
-    const res=await fetch(`https://api.airtable.com/v0/${baseId}/${tableSchedule}`,{
-      headers:{Authorization:`Bearer ${airtableToken}`}
-    });
-    const data=await res.json();
-    const scheduleList=document.getElementById('scheduleList');
-    scheduleList.innerHTML="";
-    if(data.records.length>0){
-      data.records.forEach(r=>{
-        if(r.fields.Item) scheduleList.innerHTML+="<li>"+r.fields.Item+"</li>";
-      });
-    } else {
-      scheduleList.innerHTML="<li>No schedule available</li>";
-    }
-  } catch(e){console.error(e);}
-}
-fetchSchedule();
+// --- Cost display ---
+const membershipType=document.getElementById('membershipType');
+const costDisplay=document.getElementById('costDisplay');
+membershipType.addEventListener('change',()=>{const data=languageData[selectedLang]; costDisplay.textContent=membershipType.value==="Member"?data.costMember:membershipType.value==="Non-Member"?data.costNonMember:"Select member type to see cost."});
 
-// PAYPAL FORM
-document.getElementById('signupForm').addEventListener('submit',async(e)=>{
-  e.preventDefault();
-  const formMessage=document.getElementById('formMessage');
-  if(document.getElementById('paymentMethod').value==="PayPal"){
-    formMessage.textContent="Redirecting to PayPal...";
-    window.open(paypalLink,"_blank");
-  } else {
-    formMessage.textContent="Registration submitted!";
-  }
-});
-
-// PAYMENT DISPLAY
+// --- Payment instructions & PayPal ---
 const paymentMethodSelect=document.getElementById('paymentMethod');
 const paymentInstructions=document.getElementById('paymentInstructions');
+const paypalLink="https://www.paypal.com/donate?token=CvoGFrxQa-Zj7ZXYH6xH5YvuqjivrARQdnwxkkXz5X85dtGKXRgW1UhkHZNCrCihlgZ0-Bl310FC3za-#";
+
 paymentMethodSelect.addEventListener('change',()=>{
-  if(paymentMethodSelect.value==="Cash"){
-    paymentInstructions.textContent="Please bring cash to registration table.";
-    paymentInstructions.classList.remove('hidden');
-  } else paymentInstructions.classList.add('hidden');
+  if(paymentMethodSelect.value==="Cash"){paymentInstructions.textContent=languageData[selectedLang].cashInstructions;paymentInstructions.classList.remove('hidden');} else paymentInstructions.classList.add('hidden');
 });
 
-// QUESTIONS
-document.getElementById('questionForm').addEventListener('submit',async(e)=>{
+// --- Sign up form submit ---
+document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
-  document.getElementById('questionMessage').textContent="Thank you! Question submitted.";
+  const formMessage=document.getElementById('formMessage');
+  formMessage.textContent="Submitting...";
+  const dataForm=new FormData(e.target);
+  const payload={};
+  dataForm.forEach((value,key)=>{if(key==='days'){if(!payload[key]) payload[key]=[];payload[key].push(value);} else payload[key]=value;});
+  try{
+    const res=await fetch(`https://api.airtable.com/v0/${baseId}/${tableRegistrations}`,{
+      method:'POST',
+      headers:{Authorization:`Bearer ${airtableToken}`, 'Content-Type':'application/json'},
+      body:JSON.stringify({fields: payload})
+    });
+    if(res.ok){
+      e.target.reset();
+      costDisplay.textContent="Select member type to see cost.";
+      paymentInstructions.classList.add('hidden');
+      if(paymentMethodSelect.value==="PayPal"){
+        formMessage.textContent="Redirecting to PayPal...";
+        window.open(paypalLink,"_blank");
+      } else formMessage.textContent="Registration submitted!";
+    } else {
+      const err=await res.json();
+      formMessage.textContent="Error: "+err.error?.message;
+    }
+  }catch(err){formMessage.textContent="Error submitting form.";}
+});
+
+// --- Question form submit ---
+document.getElementById('questionForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const msg=document.getElementById('questionMessage');
+  msg.textContent="Submitting...";
+  const dataForm=new FormData(e.target);
+  const question=dataForm.get('question');
+  try{
+    const res=await fetch(`https://api.airtable.com/v0/${baseId}/${tableQuestions}`,{
+      method:'POST',
+      headers:{Authorization:`Bearer ${airtableToken}`, 'Content-Type':'application/json'},
+      body:JSON.stringify({fields:{Question: question}})
+    });
+    if(res.ok){msg.textContent="Thank you! Your question has been submitted."; e.target.reset();} 
+    else {const err=await res.json(); msg.textContent="Error: "+err.error?.message;}
+  }catch(err){msg.textContent="Error submitting question.";}
 });
 </script>
+
 </body>
 </html>
