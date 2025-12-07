@@ -24,7 +24,7 @@ form{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:c
 input,select,textarea{padding:10px;border-radius:8px;border:1px solid #ccc;width:100%;max-width:400px;margin:0 auto;text-align:center;}
 label{font-weight:500;margin-top:8px;}
 .checkbox-group {display: flex;flex-direction: row;justify-content: center;gap: 12px;flex-wrap: wrap;}
-.checkbox-group label {display: flex;align-items: center;gap: 6px;cursor: pointer;min-width: 120px;}
+.checkbox-group label {display: flex;align-items: center;gap: 6px; cursor: pointer; min-width: 120px;}
 @media(max-width:500px){.checkbox-group {flex-direction: column; gap: 8px; align-items: flex-start;} .checkbox-group label {gap: 4px;}}
 .btn{display:inline-block;padding:14px 24px;border-radius:12px;background:white;color:#d14477;font-weight:600;text-decoration:none;box-shadow:0 6px 18px rgba(209,68,119,0.12);cursor:pointer;transition:all 0.2s ease-in-out;font-size:18px;}
 .btn:hover{transform:translateY(-2px);}
@@ -145,87 +145,79 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
 
 <script>
 // --- Airtable ---
-const airtableToken = "patggy7oHxwXm3DKU.53ec9f4db254b7bfec5a04be665764f22dcb9a0ed6c93318238912a9a8a58a4d";
-const baseId = "appP2cm5hgmoANQ7i";
-const tableRegistrations = "tblapX4iXV1bHPC6J";
-const tableQuestions = "tblYxvkoQROYmY2ou";
-
-// --- PayPal ---
-const paypalLink = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QVQ2374PSCCJN";
+const airtableToken= "patggy7oHxwXm3DKU.53ec9f4db254b7bfec5a04be665764f22dcb9a0ed6c93318238912a9a8a58a4d";
+const baseId= "appP2cm5hgmoANQ7i";
+const tableRegistrations="tblapX4iXV1bHPC6J";
+const tableQuestions="tblYxvkoQROYmY2ou";
 
 // --- Language ---
 let selectedLang="en";
 const languageData={
-  en:{heroTitle:"Conference 2026", 
-      heroDate:"176 Garden St, Feeding Hills, MA  • January 16th - 17th",
-      themeHeader:"Her Spiritual Life",
-      themeVerse:"\"She dresses herself with strength Proverbs 31:17 \"",
-      speakerHeader:"Guest Speaker",
-      speakerRole:"Speaker", speakerBio:"",
-      signupHeader:"Sign Up", 
-      membershipLabel:"Are you a member or non-member?",
-      membershipOptions:["Member","Non-Member"],
-      daysLabel:"Which days can you attend?",
-      fridayText:"Friday", 
-      saturdayText:"Saturday",
-      paymentLabel:"Payment Method", 
-      paymentOptions:["PayPal","Cash"], 
-      submitBtn:"Submit Registration",
-      questionHeader:"Submit a Question to Speaker", 
-      submitQuestionBtn:"Submit Question",
-      costMember:"Cost: $10", 
-      costNonMember:"Cost: $20",
-      cashInstructions:"Please bring cash to registration table.",
-      scheduleItems:["Friday 16th 6:00PM - 9:00PM Theme, Prayer, Q&A", "Saturday 17th 9:00AM - 3:30PM Theme, Prayer, Lunch, Theme Continued" ]
+  en:{
+    heroTitle:"Conference 2026",
+    heroDate:"176 Garden St, Feeding Hills, MA  • January 16th - 17th",
+    themeHeader:"Her Spiritual Life",
+    themeVerse:"\"She dresses herself with strength Proverbs 31:17\"",
+    speakerHeader:"Guest Speaker",
+    speakerRole:"Speaker",
+    speakerBio:"Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.",
+    signupHeader:"Sign Up",
+    membershipLabel:"Are you a member or non-member?",
+    membershipOptions:["Member","Non-Member"],
+    daysLabel:"Which days can you attend?",
+    fridayText:"Friday",
+    saturdayText:"Saturday",
+    paymentLabel:"Payment Method",
+    paymentOptions:["PayPal","Cash"],
+    submitBtn:"Submit Registration",
+    questionHeader:"Submit a Question to Speaker",
+    submitQuestionBtn:"Submit Question",
+    costMember:"Cost: $10",
+    costNonMember:"Cost: $20",
+    cashInstructions:"Please bring cash to registration table.",
+    scheduleItems:[
+      "Friday 16th 6:00PM - 9:00PM Theme, Prayer, Q&A",
+      "Saturday 17th 9:00AM - 3:30PM Theme, Prayer, Lunch, Theme Continued"
+    ]
   },
-ru:{
-  heroTitle:"Конференция 2026",
-  heroDate:"176 Garden St, Feeding Hills, MA  • 16 - 17 Января 2026",
-
-  themeHeader:"Ее Духовная Сила",
-  themeVerse:"\"Препоясывает силою чресла свои - Птитчи 31:17\"",
-
-  speakerHeader:"Приглашенный спикер",
-  speakerRole:"Спикер",
-  speakerBio:"",
-
-  signupHeader:"Регистрация",
-  membershipLabel:"Вы член Церкви Надежда?",
-  membershipOptions:["Член Церкви","Не Член Церкви"],
-
-  daysLabel:"В какие дни вы можете присутствовать?",
-  fridayText:"Пятница",
-  saturdayText:"Суббота",
-
-  paymentLabel:"Способ оплаты",
-  paymentOptions:["PayPal","Наличные"],
-
-  submitBtn:"Отправить регистрацию",
-  questionHeader:"Задать вопрос Спикеру ",
-  submitQuestionBtn:"Отправить вопрос",
-
-  costMember:"Стоимость: $10",
-  costNonMember:"Стоимость: $20",
-  cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.",
-
-  scheduleItems:[
-    "Пятница 16ое 6:00PM - 9:00PM Тема, Молитва, Вопросы и Ответы",
-    "Суббота 17ое 9:00AM - 3:30PM Тема, Молитва, Вопросы и Ответы, Обед, Продолжение темы"
-  ]
-}
-
+  ru:{
+    heroTitle:"Конференция 2026",
+    heroDate:"176 Garden St, Feeding Hills, MA  • 16 - 17 Января 2026",
+    themeHeader:"Ее Духовная Сила",
+    themeVerse:"\"Препоясывает силою чресла свои - Притчи 31:17\"",
+    speakerHeader:"Приглашенный спикер",
+    speakerRole:"Спикер",
+    speakerBio:"Оксана поделится инсайтами о духовном росте, строительстве общины и практическими инструментами для ежедневного обновления.",
+    signupHeader:"Регистрация",
+    membershipLabel:"Вы член Церкви Надежда?",
+    membershipOptions:["Член Церкви","Не Член Церкви"],
+    daysLabel:"В какие дни вы можете присутствовать?",
+    fridayText:"Пятница",
+    saturdayText:"Суббота",
+    paymentLabel:"Способ оплаты",
+    paymentOptions:["PayPal","Наличные"],
+    submitBtn:"Отправить регистрацию",
+    questionHeader:"Задать вопрос Спикеру",
+    submitQuestionBtn:"Отправить вопрос",
+    costMember:"Стоимость: $10",
+    costNonMember:"Стоимость: $20",
+    cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.",
+    scheduleItems:[
+      "Пятница 16ое 6:00PM - 9:00PM Тема, Молитва, Вопросы и Ответы",
+      "Суббота 17ое 9:00AM - 3:30PM Тема, Молитва, Обед, Продолжение темы"
+    ]
+  }
 };
 
-// --- Language functions ---
+// --- Language Functions ---
 function setLanguage(lang){
-  selectedLang=lang; 
-  document.getElementById("languageSelection").classList.add("hidden"); 
-  document.getElementById("mainPage").classList.remove("hidden"); 
+  selectedLang=lang;
+  document.getElementById("languageSelection").classList.add("hidden");
+  document.getElementById("mainPage").classList.remove("hidden");
   applyLanguage();
 }
-
 function applyLanguage(){
-  const data=languageData[selectedLang];
+  const data = languageData[selectedLang];
   document.getElementById("heroTitle").textContent = data.heroTitle;
   document.getElementById("heroDate").textContent = data.heroDate;
   document.getElementById("themeHeader").textContent = data.themeHeader;
@@ -253,71 +245,75 @@ function applyLanguage(){
     li.textContent=item;
     scheduleList.appendChild(li);
   });
+}
 
 // --- Cost Display ---
 const membershipType=document.getElementById('membershipType');
 const costDisplay=document.getElementById('costDisplay');
-membershipType.addEventListener('change',()=>{ /* keep same logic */ });
+membershipType.addEventListener('change',()=>{
+  const data=languageData[selectedLang];
+  if(membershipType.value==="Member") costDisplay.textContent=data.costMember;
+  else if(membershipType.value==="Non-Member") costDisplay.textContent=data.costNonMember;
+  else costDisplay.textContent="Select member type to see cost.";
+});
 
-// --- Payment Instructions ---
+// --- Payment Instructions & PayPal ---
 const paymentMethodSelect=document.getElementById('paymentMethod');
 const paymentInstructions=document.getElementById('paymentInstructions');
-paymentMethodSelect.addEventListener('change',()=>{ /* keep same logic */ });
+const paypalBaseLink="https://www.paypal.com/donate?hosted_button_id=";
+const paypalIDs={
+  "Member":"QVQ2374PSCCJN",
+  "Non-Member":"ABCDEFG1234567" // Replace with actual Non-Member PayPal button ID
+};
+paymentMethodSelect.addEventListener('change',()=>{
+  const data = languageData[selectedLang];
+  if(paymentMethodSelect.value==="Cash"){
+    paymentInstructions.textContent = data.cashInstructions;
+    paymentInstructions.classList.remove('hidden');
+  } else paymentInstructions.classList.add('hidden');
+});
 
 // --- Sign Up Form Submission ---
-const signupForm = document.getElementById('signupForm');
-const submitBtn = document.getElementById('submitBtn');
-const formMessage = document.getElementById('formMessage');
-
-signupForm.addEventListener('submit', async (e) => {
+document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
+  const formMessage=document.getElementById('formMessage');
+  formMessage.textContent="Submitting...";
+  const dataForm=new FormData(e.target);
 
-  const dataForm = new FormData(signupForm);
   const payload = {
-      "Membership": dataForm.get("Membership"),
-      "First Name": dataForm.get("First Name"),
-      "Last Name": dataForm.get("Last Name"),
-      "Email": dataForm.get("Email"),
-      "Phone": dataForm.get("Phone"),
-      "Days": dataForm.getAll("Days"),
-      "Payment Method": dataForm.get("Payment Method")
+    "Membership": dataForm.get("Membership"),
+    "First Name": dataForm.get("First Name"),
+    "Last Name": dataForm.get("Last Name"),
+    "Email": dataForm.get("Email"),
+    "Phone": dataForm.get("Phone"),
+    "Days": dataForm.getAll("Days"),
+    "Payment Method": dataForm.get("Payment Method")
   };
 
-  // --- Open PayPal if selected ---
-  if (paymentMethodSelect.value === "PayPal") {
-      window.open(paypalLink, "_blank");
-      formMessage.textContent = "Opening PayPal...";
-  } else {
-      formMessage.textContent = "Submitting registration...";
-  }
+  try{
+    const res=await fetch(`https://api.airtable.com/v0/${baseId}/${tableRegistrations}`,{
+      method:'POST',
+      headers:{Authorization:`Bearer ${airtableToken}`, 'Content-Type':'application/json'},
+      body:JSON.stringify({fields: payload})
+    });
 
-  // --- Submit to Airtable in background ---
-  try {
-      const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableRegistrations}`,{
-          method:'POST',
-          headers:{
-              Authorization:`Bearer ${airtableToken}`,
-              'Content-Type':'application/json'
-          },
-          body:JSON.stringify({fields:payload})
-      });
+    if(res.ok){
+      e.target.reset();
+      costDisplay.textContent="Select member type to see cost.";
+      paymentInstructions.classList.add('hidden');
 
-      if(res.ok){
-          signupForm.reset();
-          costDisplay.textContent="Select member type to see cost.";
-          paymentInstructions.classList.add('hidden');
-          if(paymentMethodSelect.value === "PayPal") {
-              formMessage.textContent = "Airtable submitted! Complete payment in the PayPal tab.";
-          } else {
-              formMessage.textContent = "Registration submitted!";
-          }
-      } else {
-          const err = await res.json();
-          formMessage.textContent = "Error: " + err.error?.message;
-      }
-  } catch(err){
-      formMessage.textContent = "Error submitting form.";
-  }
+      if(paymentMethodSelect.value==="PayPal"){
+        formMessage.textContent="Opening PayPal in a new tab...";
+        const membership = dataForm.get("Membership");
+        const paypalLink = paypalBaseLink + (paypalIDs[membership] || paypalIDs["Member"]);
+        window.open(paypalLink,"_blank");
+      } else formMessage.textContent="Registration submitted!";
+    } else {
+      const err=await res.json(); 
+      formMessage.textContent="Error: "+err.error?.message;
+    }
+
+  } catch(err){formMessage.textContent="Error submitting form.";}
 });
 
 // --- Question Form Submission ---
@@ -327,13 +323,14 @@ document.getElementById('questionForm').addEventListener('submit', async (e)=>{
   msg.textContent="Submitting...";
   const dataForm=new FormData(e.target);
   const question=dataForm.get('Question');
+
   try{
     const res=await fetch(`https://api.airtable.com/v0/${baseId}/${tableQuestions}`,{
       method:'POST',
       headers:{Authorization:`Bearer ${airtableToken}`, 'Content-Type':'application/json'},
-      body:JSON.stringify({fields:{Question:question}})
+      body:JSON.stringify({fields:{Question: question}})
     });
-    if(res.ok){msg.textContent="Thank you! Your question has been submitted."; e.target.reset();}
+    if(res.ok){msg.textContent="Thank you! Your question has been submitted."; e.target.reset();} 
     else {const err=await res.json(); msg.textContent="Error: "+err.error?.message;}
   }catch(err){msg.textContent="Error submitting question.";}
 });
