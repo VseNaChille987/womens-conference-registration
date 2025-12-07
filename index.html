@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Women's Conference</title>
+<title>Church Women's Conference</title>
 <style>
 :root{--accent-1:#ff758c;--accent-2:#ffb199;--card-bg:#ffffff;--muted:#6b6b6b;--radius:14px;}
 *{box-sizing:border-box;}
@@ -33,7 +33,7 @@ label{font-weight:500;margin-top:8px;}
 .checkbox-group label {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 6px; /* small gap between box and text */
   cursor: pointer;
   min-width: 120px;
 }
@@ -44,7 +44,7 @@ label{font-weight:500;margin-top:8px;}
     align-items: flex-start;
   }
   .checkbox-group label {
-    gap: 4px;
+    gap: 4px; /* smaller gap on mobile */
   }
 }
 .btn{display:inline-block;padding:14px 24px;border-radius:12px;background:white;color:#d14477;font-weight:600;text-decoration:none;box-shadow:0 6px 18px rgba(209,68,119,0.12);cursor:pointer;transition:all 0.2s ease-in-out;font-size:18px;}
@@ -65,7 +65,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
 <section id="languageSelection" class="language-selection">
   <div class="hero">
     <img src="logo.png" alt="Conference logo" class="logo">
-    <h1 id="languageHeroTitle">Women’s Conference</h1>
+    <h1 id="languageHeroTitle">Church Women’s Conference</h1>
   </div>
   <h2>Select Language / Выберите язык</h2>
   <button onclick="setLanguage('en')">English</button>
@@ -78,14 +78,14 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
 <!-- HERO -->
 <section class="hero">
   <img src="logo.png" alt="Conference logo" class="logo">
-  <h1 id="heroTitle">Women’s Conference</h1>
-  <p id="heroDate">176 Garden St Feeding Hills, MA • Saturday, Month Day, 2026 • 9:00 AM — 4:00 PM</p>
+  <h1 id="heroTitle">Church Women’s Conference</h1>
+  <p id="heroDate">Location • Saturday, Month Day, 2026 • 9:00 AM — 4:00 PM</p>
 </section>
 
 <!-- THEME & BIBLE VERSE -->
 <section class="card">
-  <h2 id="themeHeader">Her Spiritual Life</h2>
-  <p id="themeVerse">"She dresses herself with strength" Proverbs 31:17</p>
+  <h2 id="themeHeader">Conference Theme</h2>
+  <p id="themeVerse">"Your Bible verse here"</p>
 </section>
 
 <!-- GUEST SPEAKER -->
@@ -95,8 +95,8 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
     <img src="guest.jpg" alt="Oksana Grabchuk">
     <div class="details">
       <h3 id="speakerName">Oksana Grabchuk</h3>
-      <p class="muted" id="speakerRole">Speaker</p>
-      <p class="bio" id="speakerBio"></p>
+      <p class="muted" id="speakerRole">Pastor / Author / Speaker</p>
+      <p class="bio" id="speakerBio">Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.</p>
     </div>
   </div>
 </section>
@@ -165,77 +165,49 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
 </div>
 
 <script>
-// --- Airtable Config ---
-const airtableToken = "patggy7oHxwXm3DKU.53ec9f4db254b7bfec5a04be665764f22dcb9a0ed6c93318238912a9a8d";
-const baseId = "appP2cm5hgmoANQ7i";
-const tableRegistrations = "tblapX4iXV1bHPC6J";
-const tableQuestions = "tblYxvkoQROYmY2ou";
+// --- Airtable Config (RESTORED) ---
+const airtableToken= "patggy7oHxwXm3DKU.53ec9f4db254b7bfec5a04be665764f22dcb9a0ed6c93318238912a9a8a58a4d" ;
+const baseId= "appP2cm5hgmoANQ7i";
+const tableRegistrations="tblapX4iXV1bHPC6J";
+const tableQuestions="tblYxvkoQROYmY2ou";
 
 // --- Language ---
-let selectedLang = "en";
-const languageData = {
-  en: {
-    heroTitle: "Women’s Conference",
-    heroDate: "176 Garden St Feeding Hills, MA • January 16th-17th 2026",
-    themeHeader: "Her Spiritual Life",
-    themeVerse: "\"She dresses herself with strength - Proverbs 31:17\"",
-    speakerHeader: "Guest Speaker",
-    speakerRole: "Speaker",
-    speakerBio: "",
-    signupHeader: "Sign Up",
-    membershipLabel: "Are you a member or non-member?",
-    membershipOptions: ["Member", "Non-Member"],
-    daysLabel: "Which days can you attend?",
-    fridayText: "Friday",
-    saturdayText: "Saturday",
-    paymentLabel: "Payment Method",
-    paymentOptions: ["PayPal", "Cash"],
-    submitBtn: "Submit Registration",
-    questionHeader: "Submit a Question",
-    submitQuestionBtn: "Submit Question",
-    costMember: "Cost: $10",
-    costNonMember: "Cost: $20",
-    cashInstructions: "Please bring cash to registration table.",
-    scheduleItems: ["Friday 4 PM - Start","Friday 5 PM - Break","Saturday 9 AM - Session","Saturday 12 PM - Lunch","Saturday 1 PM - Workshop"],
-    placeholders: { firstName: "First Name", lastName: "Last Name", email: "Email", phone: "Phone", question: "Your question" }
+let selectedLang="en";
+const languageData={
+  en:{heroTitle:"Church Women’s Conference", heroDate:"Location • Saturday, Month Day, 2026 • 9:00 AM — 4:00 PM",
+      themeHeader:"Conference Theme", themeVerse:"\"Your Bible verse here\"", speakerHeader:"Guest Speaker",
+      speakerRole:"Pastor / Author / Speaker", speakerBio:"Oksana will share insights on spiritual growth, community building, and practical tools for daily renewal.",
+      signupHeader:"Sign Up", membershipLabel:"Are you a member or non-member?", membershipOptions:["Member","Non-Member"],
+      daysLabel:"Which days can you attend?", fridayText:"Friday", saturdayText:"Saturday",
+      paymentLabel:"Payment Method", paymentOptions:["PayPal","Cash"], submitBtn:"Submit Registration",
+      questionHeader:"Submit a Question", submitQuestionBtn:"Submit Question",
+      costMember:"Cost: $50", costNonMember:"Cost: $70",
+      cashInstructions:"Please bring cash to registration table.",
+      scheduleItems:["Friday 4 PM - Start","Friday 5 PM - Break","Saturday 9 AM - Session","Saturday 12 PM - Lunch","Saturday 1 PM - Workshop"]
   },
-  ru: {
-    heroTitle: "Церковная Конференция",
-    heroDate: "176 Garden St Feeding Hills, MA • January 16th-17th 2026",
-    themeHeader: "Ее Духовная Сила",
-    themeVerse: "\"Препоясывает силою чресла свои - Притчи 31:17\"",
-    speakerHeader: "Приглашенный спикер",
-    speakerRole: "Спикер",
-    speakerBio: "",
-    signupHeader: "Регистрация",
-    membershipLabel: "Вы участник или не участник?",
-    membershipOptions: ["Участник", "Не участник"],
-    daysLabel: "В какие дни вы можете присутствовать?",
-    fridayText: "Пятница",
-    saturdayText: "Суббота",
-    paymentLabel: "Способ оплаты",
-    paymentOptions: ["PayPal", "Наличные"],
-    submitBtn: "Отправить регистрацию",
-    questionHeader: "Задать вопрос",
-    submitQuestionBtn: "Отправить вопрос",
-    costMember: "Стоимость: $10",
-    costNonMember: "Стоимость: $20",
-    cashInstructions: "Пожалуйста, принесите наличные на регистрационный стол.",
-    scheduleItems: ["Пятница 16:00 - Начало","Пятница 17:00 - Перерыв","Суббота 9:00 - Сессия","Суббота 12:00 - Обед","Суббота 13:00 - Мастер-класс"],
-    placeholders: { firstName: "Имя", lastName: "Фамилия", email: "Электронная почта", phone: "Телефон", question: "Ваш вопрос" }
+  ru:{heroTitle:"Женская конференция церкви", heroDate:"Место проведения • Суббота, Месяц День, 2026 • 9:00 — 16:00",
+      themeHeader:"Тема конференции", themeVerse:"\"Ваша цитата из Библии здесь\"", speakerHeader:"Приглашенный спикер",
+      speakerRole:"Пастор / Автор / Спикер", speakerBio:"Оксана поделится духовным ростом, построением общины и практическими инструментами для ежедневного обновления.",
+      signupHeader:"Регистрация", membershipLabel:"Вы участник или не участник?", membershipOptions:["Участник","Не участник"],
+      daysLabel:"В какие дни вы можете присутствовать?", fridayText:"Пятница", saturdayText:"Суббота",
+      paymentLabel:"Способ оплаты", paymentOptions:["PayPal","Наличные"], submitBtn:"Отправить регистрацию",
+      questionHeader:"Задать вопрос", submitQuestionBtn:"Отправить вопрос",
+      costMember:"Стоимость: $50", costNonMember:"Стоимость: $70",
+      cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.",
+      scheduleItems:["Пятница 16:00 - Начало","Пятница 17:00 - Перерыв","Суббота 9:00 - Сессия","Суббота 12:00 - Обед","Суббота 13:00 - Мастер-класс"]
   }
 };
 
 // --- Language functions ---
-function setLanguage(lang) {
-  selectedLang = lang;
-  document.getElementById("languageSelection").classList.add("hidden");
-  document.getElementById("mainPage").classList.remove("hidden");
+function setLanguage(lang){
+  selectedLang=lang; 
+  document.getElementById("languageSelection").classList.add("hidden"); 
+  document.getElementById("mainPage").classList.remove("hidden"); 
   applyLanguage();
 }
 
-function applyLanguage() {
-  const data = languageData[selectedLang];
+function applyLanguage(){
+  const data=languageData[selectedLang];
   document.getElementById("heroTitle").textContent = data.heroTitle;
   document.getElementById("heroDate").textContent = data.heroDate;
   document.getElementById("themeHeader").textContent = data.themeHeader;
@@ -245,56 +217,43 @@ function applyLanguage() {
   document.getElementById("speakerBio").textContent = data.speakerBio;
   document.getElementById("signupHeader").textContent = data.signupHeader;
   document.getElementById("membershipLabel").textContent = data.membershipLabel;
-  document.getElementById("membershipType").options[1].text = data.membershipOptions[0];
-  document.getElementById("membershipType").options[2].text = data.membershipOptions[1];
-  document.getElementById("daysLabel").textContent = data.daysLabel;
-  document.getElementById("fridayText").textContent = data.fridayText;
-  document.getElementById("saturdayText").textContent = data.saturdayText;
-  document.getElementById("paymentLabel").textContent = data.paymentLabel;
-  document.getElementById("paymentMethod").options[1].text = data.paymentOptions[0];
-  document.getElementById("paymentMethod").options[2].text = data.paymentOptions[1];
-  document.getElementById("submitBtn").textContent = data.submitBtn;
-  document.getElementById("questionHeader").textContent = data.questionHeader;
-  document.getElementById("submitQuestionBtn").textContent = data.submitQuestionBtn;
-
-  // Update placeholders
-  document.querySelector('input[name="First Name"]').placeholder = data.placeholders.firstName;
-  document.querySelector('input[name="Last Name"]').placeholder = data.placeholders.lastName;
-  document.querySelector('input[name="Email"]').placeholder = data.placeholders.email;
-  document.querySelector('input[name="Phone"]').placeholder = data.placeholders.phone;
-  document.querySelector('textarea[name="Question"]').placeholder = data.placeholders.question;
-
+  document.getElementById("membershipType").options[1].text=data.membershipOptions[0];
+  document.getElementById("membershipType").options[2].text=data.membershipOptions[1];
+  document.getElementById("daysLabel").textContent=data.daysLabel;
+  document.getElementById("fridayText").textContent=data.fridayText;
+  document.getElementById("saturdayText").textContent=data.saturdayText;
+  document.getElementById("paymentLabel").textContent=data.paymentLabel;
+  document.getElementById("paymentMethod").options[1].text=data.paymentOptions[0];
+  document.getElementById("paymentMethod").options[2].text=data.paymentOptions[1];
+  document.getElementById("submitBtn").textContent=data.submitBtn;
+  document.getElementById("questionHeader").textContent=data.questionHeader;
+  document.getElementById("submitQuestionBtn").textContent=data.submitQuestionBtn;
   const scheduleList = document.getElementById("scheduleList");
-  scheduleList.innerHTML = "";
-  data.scheduleItems.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item;
+  scheduleList.innerHTML="";
+  data.scheduleItems.forEach(item=>{
+    const li=document.createElement("li");
+    li.textContent=item;
     scheduleList.appendChild(li);
   });
-
-  // Reset cost display and payment instructions
-  document.getElementById("costDisplay").textContent = "Select member type to see cost.";
-  document.getElementById("paymentInstructions").classList.add('hidden');
 }
 
 // --- Cost display ---
-const membershipType = document.getElementById('membershipType');
-const costDisplay = document.getElementById('costDisplay');
-membershipType.addEventListener('change', () => {
-  const data = languageData[selectedLang];
-  if (membershipType.value === data.membershipOptions[0]) costDisplay.textContent = data.costMember;
-  else if (membershipType.value === data.membershipOptions[1]) costDisplay.textContent = data.costNonMember;
-  else costDisplay.textContent = "Select member type to see cost.";
+const membershipType=document.getElementById('membershipType');
+const costDisplay=document.getElementById('costDisplay');
+membershipType.addEventListener('change',()=>{
+  const data=languageData[selectedLang];
+  if(membershipType.value==="Member") costDisplay.textContent=data.costMember;
+  else if(membershipType.value==="Non-Member") costDisplay.textContent=data.costNonMember;
+  else costDisplay.textContent="Select member type to see cost.";
 });
 
 // --- Payment instructions & PayPal ---
-const paymentMethodSelect = document.getElementById('paymentMethod');
-const paymentInstructions = document.getElementById('paymentInstructions');
-const paypalLink = "https://www.paypal.com/donate?token=CvoGFrxQa-Zj7ZXYH6xH5YvuqjivrARQdnwxkkXz5X85dtGKXRgW1UhkHZNCrCihlgZ0-Bl310FC3za-#";
-
-paymentMethodSelect.addEventListener('change', () => {
+const paymentMethodSelect=document.getElementById('paymentMethod');
+const paymentInstructions=document.getElementById('paymentInstructions');
+const paypalLink="https://www.paypal.com/donate?token=CvoGFrxQa-Zj7ZXYH6xH5YvuqjivrARQdnwxkkXz5X85dtGKXRgW1UhkHZNCrCihlgZ0-Bl310FC3za-#";
+paymentMethodSelect.addEventListener('change',()=>{
   const data = languageData[selectedLang];
-  if (paymentMethodSelect.value === data.paymentOptions[1]) { // Cash / Наличные
+  if(paymentMethodSelect.value==="Cash"){
     paymentInstructions.textContent = data.cashInstructions;
     paymentInstructions.classList.remove('hidden');
   } else {
@@ -303,11 +262,11 @@ paymentMethodSelect.addEventListener('change', () => {
 });
 
 // --- Sign up form submit ---
-document.getElementById('signupForm').addEventListener('submit', async (e) => {
+document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
-  const formMessage = document.getElementById('formMessage');
-  formMessage.textContent = "Submitting...";
-  const dataForm = new FormData(e.target);
+  const formMessage=document.getElementById('formMessage');
+  formMessage.textContent="Submitting...";
+  const dataForm=new FormData(e.target);
 
   const payload = {
     "Membership": dataForm.get("Membership"),
@@ -319,59 +278,40 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     "Payment Method": dataForm.get("Payment Method")
   };
 
-  try {
-    const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableRegistrations}`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${airtableToken}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fields: payload })
+  try{
+    const res=await fetch(`https://api.airtable.com/v0/${baseId}/${tableRegistrations}`,{
+      method:'POST',
+      headers:{Authorization:`Bearer ${airtableToken}`, 'Content-Type':'application/json'},
+      body:JSON.stringify({fields: payload})
     });
-
-    if (res.ok) {
+    if(res.ok){
       e.target.reset();
-      document.getElementById("costDisplay").textContent = "Select member type to see cost.";
-      document.getElementById("paymentInstructions").classList.add('hidden');
-
-      const data = languageData[selectedLang];
-      if (paymentMethodSelect.value === data.paymentOptions[0]) { // PayPal
-        formMessage.textContent = "Redirecting to PayPal...";
-        window.open(paypalLink, "_blank");
-      } else {
-        formMessage.textContent = "Registration submitted!";
-      }
-    } else {
-      const err = await res.json();
-      formMessage.textContent = "Error: " + err.error?.message;
-    }
-  } catch (err) {
-    formMessage.textContent = "Error submitting form.";
-  }
+      costDisplay.textContent="Select member type to see cost.";
+      paymentInstructions.classList.add('hidden');
+      if(paymentMethodSelect.value==="PayPal"){
+        formMessage.textContent="Redirecting to PayPal...";
+        window.open(paypalLink,"_blank");
+      } else formMessage.textContent="Registration submitted!";
+    } else {const err=await res.json(); formMessage.textContent="Error: "+err.error?.message;}
+  }catch(err){formMessage.textContent="Error submitting form.";}
 });
 
 // --- Question form submit ---
-document.getElementById('questionForm').addEventListener('submit', async (e) => {
+document.getElementById('questionForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
-  const msg = document.getElementById('questionMessage');
-  msg.textContent = "Submitting...";
-  const dataForm = new FormData(e.target);
-  const question = dataForm.get('Question');
-
-  try {
-    const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableQuestions}`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${airtableToken}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fields: { Question: question } })
+  const msg=document.getElementById('questionMessage');
+  msg.textContent="Submitting...";
+  const dataForm=new FormData(e.target);
+  const question=dataForm.get('Question');
+  try{
+    const res=await fetch(`https://api.airtable.com/v0/${baseId}/${tableQuestions}`,{
+      method:'POST',
+      headers:{Authorization:`Bearer ${airtableToken}`, 'Content-Type':'application/json'},
+      body:JSON.stringify({fields:{Question: question}})
     });
-
-    if (res.ok) {
-      msg.textContent = "Thank you! Your question has been submitted.";
-      e.target.reset();
-    } else {
-      const err = await res.json();
-      msg.textContent = "Error: " + err.error?.message;
-    }
-  } catch (err) {
-    msg.textContent = "Error submitting question.";
-  }
+    if(res.ok){msg.textContent="Thank you! Your question has been submitted."; e.target.reset();} 
+    else {const err=await res.json(); msg.textContent="Error: "+err.error?.message;}
+  }catch(err){msg.textContent="Error submitting question.";}
 });
 </script>
 
