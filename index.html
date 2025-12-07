@@ -23,30 +23,9 @@ h2{margin:0 0 10px 0;color:#d14477;}
 form{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;}
 input,select,textarea{padding:10px;border-radius:8px;border:1px solid #ccc;width:100%;max-width:400px;margin:0 auto;text-align:center;}
 label{font-weight:500;margin-top:8px;}
-.checkbox-group {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.checkbox-group label {
-  display: flex;
-  align-items: center;
-  gap: 6px; 
-  cursor: pointer;
-  min-width: 120px;
-}
-@media(max-width:500px){
-  .checkbox-group {
-    flex-direction: column; 
-    gap: 8px; 
-    align-items: flex-start;
-  }
-  .checkbox-group label {
-    gap: 4px; 
-  }
-}
+.checkbox-group {display: flex; flex-direction: row; justify-content: center; gap: 12px; flex-wrap: wrap;}
+.checkbox-group label {display: flex; align-items: center; gap: 6px; cursor: pointer; min-width: 120px;}
+@media(max-width:500px){.checkbox-group {flex-direction: column; gap: 8px; align-items: flex-start;} .checkbox-group label {gap: 4px;}}
 .btn{display:inline-block;padding:14px 24px;border-radius:12px;background:white;color:#d14477;font-weight:600;text-decoration:none;box-shadow:0 6px 18px rgba(209,68,119,0.12);cursor:pointer;transition:all 0.2s ease-in-out;font-size:18px;}
 .btn:hover{transform:translateY(-2px);}
 .hidden{display:none;}
@@ -126,14 +105,8 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
 
     <label id="daysLabel">Which days can you attend?</label>
     <div class="checkbox-group">
-      <label>
-        <input type="checkbox" name="Days" value="Friday">
-        <span id="fridayText">Friday</span>
-      </label>
-      <label>
-        <input type="checkbox" name="Days" value="Saturday">
-        <span id="saturdayText">Saturday</span>
-      </label>
+      <label><input type="checkbox" name="Days" value="Friday"><span id="fridayText">Friday</span></label>
+      <label><input type="checkbox" name="Days" value="Saturday"><span id="saturdayText">Saturday</span></label>
     </div>
 
     <label id="paymentLabel">Payment Method</label>
@@ -166,55 +139,35 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);}
 
 <script>
 // --- Airtable Config ---
-const airtableToken= "patggy7oHxwXm3DKU.53ec9f4db254b7bfec5a04be665764f22dcb9a0ed6c93318238912a9a8a58a4d";
-const baseId= "appP2cm5hgmoANQ7i";
-const tableRegistrations="tblapX4iXV1bHPC6J";
-const tableQuestions="tblYxvkoQROYmY2ou";
+const airtableToken= "YOUR_AIRTABLE_TOKEN";
+const baseId= "YOUR_BASE_ID";
+const tableRegistrations="YOUR_TABLE_REGISTRATIONS";
+const tableQuestions="YOUR_TABLE_QUESTIONS";
 
-// --- PayPal Links ---
+// --- PayPal ---
 const paypalIDs = { "Member":"QVQ2374PSCCJN", "Non-Member":"QVQ2374PSCCJN" };
 const paypalBaseLink = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=";
 
 // --- Language ---
 let selectedLang="en";
-const languageData={
-en:{
-heroTitle:"Conference 2026", heroDate:"176 Garden St, Feeding Hills, MA • January 16th - 17th",
-themeHeader:"Her Spiritual Life", themeVerse:"\"She dresses herself with strength Proverbs 31:17\"",
-speakerHeader:"Guest Speaker", speakerRole:"Speaker", speakerBio:"",
-signupHeader:"Sign Up", membershipLabel:"Are you a member or non-member?", membershipOptions:["Member","Non-Member"],
-daysLabel:"Which days can you attend?", fridayText:"Friday", saturdayText:"Saturday",
-paymentLabel:"Payment Method", paymentOptions:["PayPal","Cash"], submitBtn:"Submit Registration",
-questionHeader:"Submit a Question to Speaker", submitQuestionBtn:"Submit Question",
-costMember:"Cost: $10", costNonMember:"Cost: $20", cashInstructions:"Please bring cash to registration table.",
-scheduleItems:["Friday 16th 6:00PM - 9:00PM Theme, Prayer, Q&A","Saturday 17th 9:00AM - 3:30PM Theme, Prayer, Lunch, Theme Continued"]
-},
-ru:{
-heroTitle:"Конференция 2026", heroDate:"176 Garden St, Feeding Hills, MA • 16 - 17 Января 2026",
-themeHeader:"Ее Духовная Сила", themeVerse:"\"Препоясывает силою чресла свои - Притчи 31:17\"",
-speakerHeader:"Приглашенный спикер", speakerRole:"Спикер", speakerBio:"",
-signupHeader:"Регистрация", membershipLabel:"Вы член Церкви Надежда?", membershipOptions:["Член Церкви","Не Член Церкви"],
-daysLabel:"В какие дни вы можете присутствовать?", fridayText:"Пятница", saturdayText:"Суббота",
-paymentLabel:"Способ оплаты", paymentOptions:["PayPal","Наличные"], submitBtn:"Отправить регистрацию",
-questionHeader:"Задать вопрос Спикеру", submitQuestionBtn:"Отправить вопрос",
-costMember:"Стоимость: $10", costNonMember:"Стоимость: $20", cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.",
-scheduleItems:["Пятница 16ое 6:00PM - 9:00PM Тема, Молитва, Вопросы и Ответы","Суббота 17ое 9:00AM - 3:30PM Тема, Молитва, Обед, Продолжение темы"]
-}
+const languageData = {
+en:{heroTitle:"Conference 2026", heroDate:"176 Garden St, MA • Jan 16-17", themeHeader:"Her Spiritual Life", themeVerse:"\"She dresses herself with strength Proverbs 31:17\"", speakerHeader:"Guest Speaker", speakerRole:"Speaker", speakerBio:"", signupHeader:"Sign Up", membershipLabel:"Are you a member or non-member?", membershipOptions:["Member","Non-Member"], daysLabel:"Which days can you attend?", fridayText:"Friday", saturdayText:"Saturday", paymentLabel:"Payment Method", paymentOptions:["PayPal","Cash"], submitBtn:"Submit Registration", questionHeader:"Submit a Question", submitQuestionBtn:"Submit Question", costMember:"Cost: $10", costNonMember:"Cost: $20", cashInstructions:"Please bring cash to registration table.", scheduleItems:["Friday 16th 6:00PM - 9:00PM Theme, Prayer, Q&A","Saturday 17th 9:00AM - 3:30PM Theme, Prayer, Lunch, Theme Continued"]},
+ru:{heroTitle:"Конференция 2026", heroDate:"176 Garden St, MA • 16-17 Января", themeHeader:"Ее Духовная Сила", themeVerse:"\"Препоясывает силою чресла свои - Притчи 31:17\"", speakerHeader:"Приглашенный спикер", speakerRole:"Спикер", speakerBio:"", signupHeader:"Регистрация", membershipLabel:"Вы член Церкви Надежда?", membershipOptions:["Член Церкви","Не Член Церкви"], daysLabel:"В какие дни вы можете присутствовать?", fridayText:"Пятница", saturdayText:"Суббота", paymentLabel:"Способ оплаты", paymentOptions:["PayPal","Наличные"], submitBtn:"Отправить регистрацию", questionHeader:"Задать вопрос", submitQuestionBtn:"Отправить вопрос", costMember:"Стоимость: $10", costNonMember:"Стоимость: $20", cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.", scheduleItems:["Пятница 16ое 6:00PM - 9:00PM Тема, Молитва, Вопросы и Ответы","Суббота 17ое 9:00AM - 3:30PM Тема, Молитва, Обед, Продолжение темы"]}
 };
 
 // --- Language functions ---
 function setLanguage(lang){selectedLang=lang; document.getElementById("languageSelection").classList.add("hidden"); document.getElementById("mainPage").classList.remove("hidden"); applyLanguage();}
 function applyLanguage(){
   const data=languageData[selectedLang];
-  document.getElementById("heroTitle").textContent = data.heroTitle;
-  document.getElementById("heroDate").textContent = data.heroDate;
-  document.getElementById("themeHeader").textContent = data.themeHeader;
-  document.getElementById("themeVerse").textContent = data.themeVerse;
-  document.getElementById("speakerHeader").textContent = data.speakerHeader;
-  document.getElementById("speakerRole").textContent = data.speakerRole;
-  document.getElementById("speakerBio").textContent = data.speakerBio;
-  document.getElementById("signupHeader").textContent = data.signupHeader;
-  document.getElementById("membershipLabel").textContent = data.membershipLabel;
+  document.getElementById("heroTitle").textContent=data.heroTitle;
+  document.getElementById("heroDate").textContent=data.heroDate;
+  document.getElementById("themeHeader").textContent=data.themeHeader;
+  document.getElementById("themeVerse").textContent=data.themeVerse;
+  document.getElementById("speakerHeader").textContent=data.speakerHeader;
+  document.getElementById("speakerRole").textContent=data.speakerRole;
+  document.getElementById("speakerBio").textContent=data.speakerBio;
+  document.getElementById("signupHeader").textContent=data.signupHeader;
+  document.getElementById("membershipLabel").textContent=data.membershipLabel;
   document.getElementById("membershipType").options[1].text=data.membershipOptions[0];
   document.getElementById("membershipType").options[2].text=data.membershipOptions[1];
   document.getElementById("daysLabel").textContent=data.daysLabel;
@@ -226,10 +179,14 @@ function applyLanguage(){
   document.getElementById("submitBtn").textContent=data.submitBtn;
   document.getElementById("questionHeader").textContent=data.questionHeader;
   document.getElementById("submitQuestionBtn").textContent=data.submitQuestionBtn;
-  const scheduleList = document.getElementById("scheduleList"); scheduleList.innerHTML=""; data.scheduleItems.forEach(item=>{const li=document.createElement("li"); li.textContent=item; scheduleList.appendChild(li);});
+  const scheduleList=document.getElementById("scheduleList");
+  scheduleList.innerHTML="";
+  data.scheduleItems.forEach(item=>{const li=document.createElement("li"); li.textContent=item; scheduleList.appendChild(li);});
 }
 
 // --- Cost display ---
+const membershipType=document.getElementById('membershipType');
+const costDisplay=document.getElementById('costDisplay');
 membershipType.addEventListener('change',()=>{
   const data=languageData[selectedLang];
   if(membershipType.value==="Member") costDisplay.textContent=data.costMember;
@@ -238,38 +195,50 @@ membershipType.addEventListener('change',()=>{
 });
 
 // --- Payment instructions ---
+const paymentMethodSelect=document.getElementById('paymentMethod');
+const paymentInstructions=document.getElementById('paymentInstructions');
 paymentMethodSelect.addEventListener('change',()=>{
   const data=languageData[selectedLang];
   if(paymentMethodSelect.value==="Cash"){ paymentInstructions.textContent=data.cashInstructions; paymentInstructions.classList.remove('hidden'); }
   else paymentInstructions.classList.add('hidden');
 });
 
-// --- Sign up submit (PayPal opens first) ---
-document.getElementById('signupForm').addEventListener('submit',(e)=>{
+// --- Detect Mobile ---
+function isMobile(){return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);}
+
+// --- Form Submit ---
+document.getElementById('signupForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const formMessage=document.getElementById('formMessage');
   formMessage.textContent="Submitting...";
-  const dataForm = new FormData(e.target);
-  const paymentMethod = dataForm.get("Payment Method");
-  const membership = dataForm.get("Membership");
-
-  // Open PayPal first
-  if(paymentMethod==="PayPal"){ window.open(paypalBaseLink + paypalIDs[membership],"paypalWindow"); formMessage.textContent="Redirecting to PayPal..."; }
-
-  // Submit Airtable async
+  const dataForm=new FormData(e.target);
+  const membership=dataForm.get("Membership");
+  const paymentMethod=dataForm.get("Payment Method");
   const payload={ "Membership": membership, "First Name": dataForm.get("First Name"), "Last Name": dataForm.get("Last Name"), "Email": dataForm.get("Email"), "Phone": dataForm.get("Phone"), "Days": dataForm.getAll("Days"), "Payment Method": paymentMethod };
-  fetch(`https://api.airtable.com/v0/${baseId}/${tableRegistrations}`, { method:'POST', headers:{Authorization:`Bearer ${airtableToken}`, 'Content-Type':'application/json'}, body:JSON.stringify({fields: payload})}).then(()=>{ e.target.reset(); costDisplay.textContent="Select member type to see cost."; paymentInstructions.classList.add('hidden'); });
+
+  try{
+    await fetch(`https://api.airtable.com/v0/${baseId}/${tableRegistrations}`, {method:'POST', headers:{Authorization:`Bearer ${airtableToken}`, 'Content-Type':'application/json'}, body:JSON.stringify({fields:payload})});
+    e.target.reset(); costDisplay.textContent="Select member type to see cost."; paymentInstructions.classList.add('hidden');
+
+    if(paymentMethod==="PayPal"){
+      if(isMobile()){ 
+        window.location.href = paypalBaseLink + paypalIDs[membership];
+      } else {
+        window.open(paypalBaseLink + paypalIDs[membership], "_blank", "width=600,height=700");
+        formMessage.textContent="Registration submitted! Please complete PayPal in the new window.";
+      }
+    } else formMessage.textContent="Registration submitted!";
+  }catch(err){formMessage.textContent="Error submitting form.";}
 });
 
-// --- Question submit ---
+// --- Question form ---
 document.getElementById('questionForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const msg=document.getElementById('questionMessage');
   msg.textContent="Submitting...";
   const dataForm=new FormData(e.target);
-  const question=dataForm.get('Question');
   try{
-    await fetch(`https://api.airtable.com/v0/${baseId}/${tableQuestions}`,{ method:'POST', headers:{Authorization:`Bearer ${airtableToken}`, 'Content-Type':'application/json'}, body:JSON.stringify({fields:{Question: question}}) });
+    await fetch(`https://api.airtable.com/v0/${baseId}/${tableQuestions}`, {method:'POST', headers:{Authorization:`Bearer ${airtableToken}`, 'Content-Type':'application/json'}, body:JSON.stringify({fields:{Question:dataForm.get('Question')}})});
     msg.textContent="Thank you! Your question has been submitted."; e.target.reset();
   }catch(err){msg.textContent="Error submitting question.";}
 });
