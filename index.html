@@ -153,18 +153,106 @@ const tableQuestions = "tblYxvkoQROYmY2ou";
 // --- PayPal ---
 const paypalLink = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QVQ2374PSCCJN";
 
-// --- Language Data ---
+// --- Language ---
 let selectedLang="en";
-const languageData={/* keep same as your previous code */};
+const languageData={
+  en:{heroTitle:"Conference 2026", 
+      heroDate:"176 Garden St, Feeding Hills, MA  • January 16th - 17th",
+      themeHeader:"Her Spiritual Life",
+      themeVerse:"\"She dresses herself with strength Proverbs 31:17 \"",
+      speakerHeader:"Guest Speaker",
+      speakerRole:"Speaker", speakerBio:"",
+      signupHeader:"Sign Up", 
+      membershipLabel:"Are you a member or non-member?",
+      membershipOptions:["Member","Non-Member"],
+      daysLabel:"Which days can you attend?",
+      fridayText:"Friday", 
+      saturdayText:"Saturday",
+      paymentLabel:"Payment Method", 
+      paymentOptions:["PayPal","Cash"], 
+      submitBtn:"Submit Registration",
+      questionHeader:"Submit a Question to Speaker", 
+      submitQuestionBtn:"Submit Question",
+      costMember:"Cost: $10", 
+      costNonMember:"Cost: $20",
+      cashInstructions:"Please bring cash to registration table.",
+      scheduleItems:["Friday 16th 6:00PM - 9:00PM Theme, Prayer, Q&A", "Saturday 17th 9:00AM - 3:30PM Theme, Prayer, Lunch, Theme Continued" ]
+  },
+ru:{
+  heroTitle:"Конференция 2026",
+  heroDate:"176 Garden St, Feeding Hills, MA  • 16 - 17 Января 2026",
 
-// --- Language Functions ---
+  themeHeader:"Ее Духовная Сила",
+  themeVerse:"\"Препоясывает силою чресла свои - Птитчи 31:17\"",
+
+  speakerHeader:"Приглашенный спикер",
+  speakerRole:"Спикер",
+  speakerBio:"",
+
+  signupHeader:"Регистрация",
+  membershipLabel:"Вы член Церкви Надежда?",
+  membershipOptions:["Член Церкви","Не Член Церкви"],
+
+  daysLabel:"В какие дни вы можете присутствовать?",
+  fridayText:"Пятница",
+  saturdayText:"Суббота",
+
+  paymentLabel:"Способ оплаты",
+  paymentOptions:["PayPal","Наличные"],
+
+  submitBtn:"Отправить регистрацию",
+  questionHeader:"Задать вопрос Спикеру ",
+  submitQuestionBtn:"Отправить вопрос",
+
+  costMember:"Стоимость: $10",
+  costNonMember:"Стоимость: $20",
+  cashInstructions:"Пожалуйста, принесите наличные на регистрационный стол.",
+
+  scheduleItems:[
+    "Пятница 16ое 6:00PM - 9:00PM Тема, Молитва, Вопросы и Ответы",
+    "Суббота 17ое 9:00AM - 3:30PM Тема, Молитва, Вопросы и Ответы, Обед, Продолжение темы"
+  ]
+}
+
+};
+
+// --- Language functions ---
 function setLanguage(lang){
-  selectedLang=lang;
-  document.getElementById("languageSelection").classList.add("hidden");
-  document.getElementById("mainPage").classList.remove("hidden");
+  selectedLang=lang; 
+  document.getElementById("languageSelection").classList.add("hidden"); 
+  document.getElementById("mainPage").classList.remove("hidden"); 
   applyLanguage();
 }
-function applyLanguage(){ /* keep same as your previous code */ }
+
+function applyLanguage(){
+  const data=languageData[selectedLang];
+  document.getElementById("heroTitle").textContent = data.heroTitle;
+  document.getElementById("heroDate").textContent = data.heroDate;
+  document.getElementById("themeHeader").textContent = data.themeHeader;
+  document.getElementById("themeVerse").textContent = data.themeVerse;
+  document.getElementById("speakerHeader").textContent = data.speakerHeader;
+  document.getElementById("speakerRole").textContent = data.speakerRole;
+  document.getElementById("speakerBio").textContent = data.speakerBio;
+  document.getElementById("signupHeader").textContent = data.signupHeader;
+  document.getElementById("membershipLabel").textContent = data.membershipLabel;
+  document.getElementById("membershipType").options[1].text=data.membershipOptions[0];
+  document.getElementById("membershipType").options[2].text=data.membershipOptions[1];
+  document.getElementById("daysLabel").textContent=data.daysLabel;
+  document.getElementById("fridayText").textContent=data.fridayText;
+  document.getElementById("saturdayText").textContent=data.saturdayText;
+  document.getElementById("paymentLabel").textContent=data.paymentLabel;
+  document.getElementById("paymentMethod").options[1].text=data.paymentOptions[0];
+  document.getElementById("paymentMethod").options[2].text=data.paymentOptions[1];
+  document.getElementById("submitBtn").textContent=data.submitBtn;
+  document.getElementById("questionHeader").textContent=data.questionHeader;
+  document.getElementById("submitQuestionBtn").textContent=data.submitQuestionBtn;
+  const scheduleList = document.getElementById("scheduleList");
+  scheduleList.innerHTML="";
+  data.scheduleItems.forEach(item=>{
+    const li=document.createElement("li");
+    li.textContent=item;
+    scheduleList.appendChild(li);
+  });
 
 // --- Cost Display ---
 const membershipType=document.getElementById('membershipType');
